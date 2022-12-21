@@ -1,10 +1,20 @@
-# XEModernizeAngular
+# XE_Modernize_Angular
+
+XE Modernize Angular - Session
+
+-   My [Slides](slides.md) in 🇮🇹
+
+---
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.18.
 
+```shell
+ng new XE-Modernize-Angular --minimal -s -t -S --routing --strict --packageManager pnpm
+```
+
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `pnpm run start` or `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
