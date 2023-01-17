@@ -106,6 +106,7 @@ ALCUNI APPROFONDIMENTI:
 -   approfondimento sulle novità del [provideHttp](https://netbasal.com/using-the-angular-http-client-in-angular-v15-f4bec3c11926)
 -   utilizzo dei nuovi tools [vite/esbuild](https://marmicode.io/blog/versatile-angular) abilitati da standalone + inject
 -   articolo sull'utilizzo di [TemplateDrive Forms](https://timdeschryver.dev/blog/a-practical-guide-to-angular-template-driven-forms) + [video](https://youtu.be/7koRJKiBQGA) di Ward Bell sull'argomento!
+-   articolo sulle [novita standalone](https://www.angulararchitects.io/en/aktuelles/modern-and-lightweight-angular-architectures-with-angulars-latest-innovations/) etc... di Angular 15 by Manfred
 -   bellissimo articolo Manfred su nuovi [pattern DI](https://www.angulararchitects.io/en/aktuelles/patterns-for-custom-standalone-apis-in-angular/?mc_cid=dcfc4a34f9&mc_eid=bca811da1f) introdotti con _inject_ 
 
 ---
