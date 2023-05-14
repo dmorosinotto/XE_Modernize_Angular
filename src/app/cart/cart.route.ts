@@ -1,10 +1,10 @@
 import { Injectable, NgModule } from "@angular/core";
-import { RouterModule, Routes, CanDeactivate, UrlTree } from "@angular/router";
+import { RouterModule, Routes, UrlTree } from "@angular/router";
 import { Observable } from "rxjs";
 import { CartComponent, CartModule } from "./index";
 
 @Injectable()
-export class CanExitCart implements CanDeactivate<CartComponent> {
+export class CanExitCart  {
 	canDeactivate(
 		component: CartComponent
 		// currentRoute: ActivatedRouteSnapshot,
