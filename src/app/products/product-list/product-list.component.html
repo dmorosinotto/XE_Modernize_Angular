@@ -1,0 +1,30 @@
+<h2>Products</h2>
+
+<div *ngFor="let product of products">
+  <h3>
+    <a
+      [title]="product.name + ' details'"
+      [routerLink]="['/products', product.id]"
+    >
+      >
+      {{ product.name }}
+    </a>
+  </h3>
+
+  <p *ngIf="product.description; else nodesc">
+    Description: {{ product.description }}
+  </p>
+
+  <button type="button" (click)="share(product)">Share</button>
+
+  <app-product-alerts
+    [limit]="price_limit"
+    [product]="product"
+    (notify)="onNotify($event)"
+  >
+  </app-product-alerts>
+</div>
+
+<ng-template #nodesc>
+  <span class="red">NO DESCRIPTION AVAILABLE</span>
+</ng-template>

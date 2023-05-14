@@ -1,0 +1,14 @@
+<h3 [ngClass]="{ error: frmCtrl.invalid }" (click)="setCost(0)">
+  Shipping Prices
+</h3>
+
+<div
+  class="shipping-item"
+  *ngFor="let shipping of (shippingCosts | async)"
+  (click)="setCost(shipping.price)"
+>
+  <span [style.color]="frmCtrl.value == shipping.price ? 'green' : 'black'">{{
+    shipping.type
+  }}</span>
+  <span>{{ shipping.price | currency }}</span>
+</div>

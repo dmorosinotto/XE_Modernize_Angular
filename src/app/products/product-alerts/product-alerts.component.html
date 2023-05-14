@@ -1,0 +1,8 @@
+<!-- <p *ngIf="product && product.price > 700"> -->
+<ng-container *ngIf="product">
+  <p *ngIf="product.price > limit">
+    <button type="button" (click)="notify.emit(product.price)">
+      Notify Me
+    </button>
+  </p>
+</ng-container>

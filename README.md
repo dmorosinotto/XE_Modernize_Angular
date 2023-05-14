@@ -6,7 +6,7 @@ XE Modernize Angular - Session
 
 ---
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.18.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.7.
 
 ```shell
 ng new XE-Modernize-Angular --minimal -s -t -S --routing --strict --packageManager pnpm
