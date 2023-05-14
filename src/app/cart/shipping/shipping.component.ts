@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy } from "@angular/core";
 import { Observable } from "rxjs";
 import { ShippingService, IShipping } from "./shipping.service";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { BaseComponent } from "@shared/base.component";
 
 @Component({
@@ -18,7 +18,7 @@ export class ShippingComponent extends BaseComponent {
 		this.shippingCosts = this.shippingService.getShippingPrices().pipe(this.takeUntilDestroy());
 	}
 
-	@Input() frmCtrl!: FormControl;
+	@Input() frmCtrl!: UntypedFormControl;
 
 	setCost(price: number) {
 		this.frmCtrl.setValue(price);

@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { CartService } from "../shared/cart.service";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 
 @Component({
@@ -9,8 +9,8 @@ import { Router } from "@angular/router";
 	styles: ["input.ng-invalid.ng-touched {border: 2px solid red }"]
 })
 export class CartComponent {
-	checkoutForm: FormGroup;
-	constructor(private cartSrv: CartService, private formBuilder: FormBuilder, private router: Router) {
+	checkoutForm: UntypedFormGroup;
+	constructor(private cartSrv: CartService, private formBuilder: UntypedFormBuilder, private router: Router) {
 		this.checkoutForm = this.formBuilder.group({
 			name: ["", Validators.required],
 			address: "",
