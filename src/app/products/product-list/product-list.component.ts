@@ -1,11 +1,16 @@
 import { Component } from "@angular/core";
 
 import { Product, FAKE_PRODUCTS, PRICE_LIMIT } from "@shared/FAKE_products";
+import { ProductAlertsComponent } from "../product-alerts/product-alerts.component";
+import { RouterLink } from "@angular/router";
+import { NgFor, NgIf } from "@angular/common";
 
 @Component({
-	selector: "app-product-list",
-	templateUrl: "./product-list.component.html",
-	styleUrls: ["./product-list.component.css"]
+    selector: "app-product-list",
+    templateUrl: "./product-list.component.html",
+    styleUrls: ["./product-list.component.css"],
+    standalone: true,
+    imports: [NgFor, RouterLink, NgIf, ProductAlertsComponent]
 })
 export class ProductListComponent {
 	products = FAKE_PRODUCTS;

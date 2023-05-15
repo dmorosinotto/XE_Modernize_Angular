@@ -1,12 +1,16 @@
 import { Component } from "@angular/core";
 import { CartService } from "../shared/cart.service";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
+import { ShippingComponent } from "./shipping/shipping.component";
+import { NgFor, CurrencyPipe } from "@angular/common";
 
 @Component({
-	selector: "app-cart",
-	templateUrl: "./cart.component.html",
-	styles: ["input.ng-invalid.ng-touched {border: 2px solid red }"]
+    selector: "app-cart",
+    templateUrl: "./cart.component.html",
+    styles: ["input.ng-invalid.ng-touched {border: 2px solid red }"],
+    standalone: true,
+    imports: [NgFor, ReactiveFormsModule, ShippingComponent, CurrencyPipe]
 })
 export class CartComponent {
 	checkoutForm: UntypedFormGroup;

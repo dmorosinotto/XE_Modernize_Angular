@@ -5,9 +5,8 @@ import { ShippingService } from "./shipping.service";
 import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
-	declarations: [ShippingComponent],
-	exports: [ShippingComponent],
-	imports: [CommonModule, ReactiveFormsModule],
-	providers: [ShippingService]
+    exports: [ShippingComponent],
+    imports: [CommonModule, ReactiveFormsModule, ShippingComponent],
+    providers: [ShippingService]
 })
 export class ShippingModule {}

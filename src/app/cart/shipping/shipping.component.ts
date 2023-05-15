@@ -3,12 +3,16 @@ import { Observable } from "rxjs";
 import { ShippingService, IShipping } from "./shipping.service";
 import { UntypedFormControl } from "@angular/forms";
 import { BaseComponent } from "@shared/base.component";
+import { NgClass, NgFor, AsyncPipe, CurrencyPipe } from "@angular/common";
 
 @Component({
-	selector: "app-shipping",
-	templateUrl: "./shipping.component.html",
-	styles: [".error { color: red }"]
-	// providers: [ShippingService],
+    selector: "app-shipping",
+    templateUrl: "./shipping.component.html",
+    styles: [".error { color: red }"]
+    // providers: [ShippingService],
+    ,
+    standalone: true,
+    imports: [NgClass, NgFor, AsyncPipe, CurrencyPipe]
 })
 export class ShippingComponent extends BaseComponent {
 	shippingCosts!: Observable<IShipping[]>;

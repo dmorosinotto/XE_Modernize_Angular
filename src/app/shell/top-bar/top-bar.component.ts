@@ -1,11 +1,14 @@
 import { Component } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { CartService } from "@shared/cart.service";
+import { NgClass } from "@angular/common";
 
 @Component({
-	selector: "app-top-bar",
-	templateUrl: "./top-bar.component.html",
-	styleUrls: ["./top-bar.component.css"]
+    selector: "app-top-bar",
+    templateUrl: "./top-bar.component.html",
+    styleUrls: ["./top-bar.component.css"],
+    standalone: true,
+    imports: [RouterLink, NgClass]
 })
 export class TopBarComponent {
 	constructor(private router: Router, public cartService: CartService) {}

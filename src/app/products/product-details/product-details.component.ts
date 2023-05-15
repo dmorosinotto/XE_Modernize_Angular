@@ -3,11 +3,14 @@ import { ActivatedRoute } from "@angular/router";
 import { CartService } from "@shared/cart.service";
 
 import { Product, FAKE_PRODUCTS } from "@shared/FAKE_products";
+import { NgIf, CurrencyPipe } from "@angular/common";
 
 @Component({
-	selector: "app-product-details",
-	templateUrl: "./product-details.component.html",
-	styles: []
+    selector: "app-product-details",
+    templateUrl: "./product-details.component.html",
+    styles: [],
+    standalone: true,
+    imports: [NgIf, CurrencyPipe]
 })
 export class ProductDetailsComponent implements OnInit {
 	product: Product | undefined;
