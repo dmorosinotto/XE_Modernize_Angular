@@ -13,9 +13,8 @@ export const PRODUCT_ROUTES: Routes = [
 ];
 
 @NgModule({
-	declarations: [ProductListComponent, ProductDetailsComponent, ProductAlertsComponent],
-	// exports: [ProductListComponent, ProductDetailsComponent, ProductAlertsComponent],
-	imports: [RouterModule.forChild(PRODUCT_ROUTES), CommonModule],
-	providers: [provideProductService]
+    // exports: [ProductListComponent, ProductDetailsComponent, ProductAlertsComponent],
+    imports: [RouterModule.forChild(PRODUCT_ROUTES), CommonModule, ProductListComponent, ProductDetailsComponent, ProductAlertsComponent],
+    providers: [provideProductService]
 })
 export class ProductsLazyModule {}

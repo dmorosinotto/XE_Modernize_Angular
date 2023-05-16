@@ -1,11 +1,11 @@
 import { Injectable, NgModule } from "@angular/core";
-import { RouterModule, Routes, CanActivate, CanDeactivate, UrlTree } from "@angular/router";
+import { RouterModule, Routes, UrlTree } from "@angular/router";
 import { Observable } from "rxjs";
 import { CartComponent, CartModule } from "./cart.component";
 import { CartService } from "@app/state/cart.service";
 
 @Injectable()
-export class CanOpenCartIfNotEmpty implements CanActivate {
+export class CanOpenCartIfNotEmpty  {
 	constructor(private cartService: CartService) {}
 
 	canActivate(/*
@@ -17,7 +17,7 @@ export class CanOpenCartIfNotEmpty implements CanActivate {
 }
 
 @Injectable()
-export class CanExitCart implements CanDeactivate<CartComponent> {
+export class CanExitCart  {
 	canDeactivate(
 		component: CartComponent
 		// currentRoute: ActivatedRouteSnapshot,

@@ -3,7 +3,8 @@ import { AuthService } from "./auth.service";
 import { Subscription } from "rxjs";
 
 @Directive({
-	selector: "[hasRole]"
+    selector: "[hasRole]",
+    standalone: true
 })
 export class HasRoleDirective {
 	constructor(
@@ -49,8 +50,4 @@ export class HasRoleDirective {
 }
 
 //SAMPLE SCAM
-@NgModule({
-	declarations: [HasRoleDirective],
-	exports: [HasRoleDirective]
-})
-export class HasRoleModule {}
+

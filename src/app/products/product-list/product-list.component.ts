@@ -1,11 +1,16 @@
 import { Component } from "@angular/core";
 
 import { Product, ProductService } from "@app/state/product.service";
+import { ProductAlertsComponent } from "../product-alerts/product-alerts.component";
+import { RouterLink } from "@angular/router";
+import { NgFor, NgIf } from "@angular/common";
 
 @Component({
-	selector: "app-product-list",
-	templateUrl: "./product-list.component.html",
-	styleUrls: ["./product-list.component.css"]
+    selector: "app-product-list",
+    templateUrl: "./product-list.component.html",
+    styleUrls: ["./product-list.component.css"],
+    standalone: true,
+    imports: [NgFor, RouterLink, NgIf, ProductAlertsComponent]
 })
 export class ProductListComponent {
 	constructor(private productService: ProductService) {}

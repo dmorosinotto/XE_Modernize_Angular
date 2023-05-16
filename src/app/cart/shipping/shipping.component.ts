@@ -1,5 +1,5 @@
 import { Component, Input, NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, NgClass, NgFor, AsyncPipe, CurrencyPipe } from "@angular/common";
 import { FormControl } from "@angular/forms";
 import { Observable } from "rxjs";
 
@@ -7,10 +7,13 @@ import { ShippingService, IShipping } from "./shipping.service";
 import { BaseComponent } from "@app/shell/base.component";
 
 @Component({
-	selector: "app-shipping",
-	templateUrl: "./shipping.component.html",
-	styles: [".error { color: red }"]
-	// providers: [ShippingService],
+    selector: "app-shipping",
+    templateUrl: "./shipping.component.html",
+    styles: [".error { color: red }"]
+    // providers: [ShippingService],
+    ,
+    standalone: true,
+    imports: [NgClass, NgFor, AsyncPipe, CurrencyPipe]
 })
 export class ShippingComponent extends BaseComponent {
 	shippingCosts!: Observable<IShipping[]>;
@@ -29,9 +32,8 @@ export class ShippingComponent extends BaseComponent {
 
 //SAMPLE SCAM WITH PROVIDERS
 @NgModule({
-	declarations: [ShippingComponent],
-	exports: [ShippingComponent],
-	imports: [CommonModule],
-	providers: [ShippingService]
+    exports: [ShippingComponent],
+    imports: [CommonModule, ShippingComponent],
+    providers: [ShippingService]
 })
 export class ShippingModule {}
