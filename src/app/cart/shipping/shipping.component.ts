@@ -1,8 +1,10 @@
-import { Component, Input, OnDestroy } from "@angular/core";
-import { Observable } from "rxjs";
-import { ShippingService, IShipping } from "./shipping.service";
+import { Component, Input, NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import { FormControl } from "@angular/forms";
-import { BaseComponent } from "@shared/base.component";
+import { Observable } from "rxjs";
+
+import { ShippingService, IShipping } from "./shipping.service";
+import { BaseComponent } from "@app/shell/base.component";
 
 @Component({
 	selector: "app-shipping",
@@ -24,3 +26,12 @@ export class ShippingComponent extends BaseComponent {
 		this.frmCtrl.setValue(price);
 	}
 }
+
+//SAMPLE SCAM WITH PROVIDERS
+@NgModule({
+	declarations: [ShippingComponent],
+	exports: [ShippingComponent],
+	imports: [CommonModule],
+	providers: [ShippingService]
+})
+export class ShippingModule {}

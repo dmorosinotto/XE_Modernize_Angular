@@ -1,7 +1,20 @@
 import { Injectable, NgModule } from "@angular/core";
-import { RouterModule, Routes, CanDeactivate, UrlTree } from "@angular/router";
+import { RouterModule, Routes, CanActivate, CanDeactivate, UrlTree } from "@angular/router";
 import { Observable } from "rxjs";
-import { CartComponent, CartModule } from "./index";
+import { CartComponent, CartModule } from "./cart.component";
+import { CartService } from "@app/state/cart.service";
+
+@Injectable()
+export class CanOpenCartIfNotEmpty implements CanActivate {
+	constructor(private cartService: CartService) {}
+
+	canActivate(/*
+		route: ActivatedRouteSnapshot,
+		state: RouterStateSnapshot
+	*/): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+		return !this.cartService.isEmpty;
+	}
+}
 
 @Injectable()
 export class CanExitCart implements CanDeactivate<CartComponent> {
@@ -16,11 +29,17 @@ export class CanExitCart implements CanDeactivate<CartComponent> {
 }
 
 export const CART_ROUTES: Routes = [
-	{ path: "", component: CartComponent, pathMatch: "full", canDeactivate: [CanExitCart] }
+	{
+		path: "",
+		component: CartComponent,
+		pathMatch: "full",
+		canActivate: [CanOpenCartIfNotEmpty],
+		canDeactivate: [CanExitCart]
+	}
 ];
 
 @NgModule({
 	imports: [RouterModule.forChild(CART_ROUTES), CartModule],
-	providers: [CanExitCart]
+	providers: [CanExitCart, CanOpenCartIfNotEmpty]
 })
 export class CartLazyModule {}

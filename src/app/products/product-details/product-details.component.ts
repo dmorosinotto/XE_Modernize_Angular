@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { CartService } from "@shared/cart.service";
 
-import { Product, FAKE_PRODUCTS } from "@shared/FAKE_products";
+import { CartService } from "@app/state/cart.service";
+import { Product, ProductService } from "@app/state/product.service";
 
 @Component({
 	selector: "app-product-details",
@@ -12,7 +12,11 @@ import { Product, FAKE_PRODUCTS } from "@shared/FAKE_products";
 export class ProductDetailsComponent implements OnInit {
 	product: Product | undefined;
 
-	constructor(private route: ActivatedRoute, public cartService: CartService) {}
+	constructor(
+		private route: ActivatedRoute,
+		public cartService: CartService,
+		private productService: ProductService
+	) {}
 
 	ngOnInit() {
 		// First get the product id from the current route.
@@ -20,7 +24,7 @@ export class ProductDetailsComponent implements OnInit {
 		const productIdFromRoute = Number(routeParams.get("productId"));
 
 		// Find the product that correspond with the id provided in route.
-		this.product = FAKE_PRODUCTS.find(product => product.id === productIdFromRoute);
+		this.product = this.productService.getAll().find(product => product.id === productIdFromRoute);
 	}
 
 	Buy(product: Product) {

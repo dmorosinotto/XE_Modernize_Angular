@@ -1,0 +1,33 @@
+import { Component, VERSION } from "@angular/core";
+import { Router } from "@angular/router";
+
+import { AuthService } from "@app/state/auth";
+
+@Component({
+	selector: "app-toggle-login-out",
+	template: `
+		<p *ngIf="!auth.isLoggedIn(); else logout">
+			Welcome to <b>{{ ver }}</b
+			>, press button to procede...<br />
+			<button (click)="Login()">Login</button>
+		</p>
+		<ng-template #logout>
+			<button (click)="Logout()">LOGOUT</button>
+		</ng-template>
+	`,
+	styles: ["button { background-color: black }"]
+})
+export class ToggleLoginOutComponent {
+	ver = `ver. ${VERSION.full}`;
+	constructor(public auth: AuthService, private router: Router) {}
+
+	Login() {
+		this.auth.Login();
+		this.router.navigateByUrl("/");
+	}
+
+	Logout() {
+		this.auth.Logout();
+		this.router.navigate(["login"]);
+	}
+}

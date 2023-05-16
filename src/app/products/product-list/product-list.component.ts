@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 
-import { Product, FAKE_PRODUCTS, PRICE_LIMIT } from "@shared/FAKE_products";
+import { Product, ProductService } from "@app/state/product.service";
 
 @Component({
 	selector: "app-product-list",
@@ -8,20 +8,16 @@ import { Product, FAKE_PRODUCTS, PRICE_LIMIT } from "@shared/FAKE_products";
 	styleUrls: ["./product-list.component.css"]
 })
 export class ProductListComponent {
-	products = FAKE_PRODUCTS;
-	price_limit = PRICE_LIMIT;
+	constructor(private productService: ProductService) {}
+
+	products = this.productService.getAll();
+	price_limit = this.productService.LIMIT;
 
 	share(p: Product) {
-		window.alert(`The product ${p.id} has been shared!`);
+		window.alert(`The product ${p.name} has been shared!`);
 	}
 
 	onNotify(price: number) {
-		window.alert("You will be notified when the product goes on sale! Actually $" + price);
+		window.alert("You will be notified when the product will be updated! Actually $." + price);
 	}
 }
-
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at https://angular.io/license
-*/

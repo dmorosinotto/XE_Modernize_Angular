@@ -1,7 +1,10 @@
-import { Component } from "@angular/core";
-import { CartService } from "../shared/cart.service";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, NgModule } from "@angular/core";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
+
+import { CartService } from "@app/state/cart.service";
+import { ShippingModule } from "./shipping/shipping.component";
 
 @Component({
 	selector: "app-cart",
@@ -35,6 +38,14 @@ export class CartComponent {
 
 	get isSaved() {
 		if (!this.checkoutForm.dirty) return true;
-		else return confirm("Dati non salvati!\nVuoi uscire?");
+		else return confirm("Data NOT saved!\nDo you want to exit checkout?");
 	}
 }
+
+//SAMPLE SCAM
+@NgModule({
+	declarations: [CartComponent],
+	exports: [CartComponent],
+	imports: [ShippingModule, ReactiveFormsModule, CommonModule]
+})
+export class CartModule {}

@@ -1,4 +1,4 @@
-import { Product } from "./FAKE_products";
+import { Product } from "./product.service";
 import { Injectable } from "@angular/core";
 
 @Injectable({
@@ -13,7 +13,6 @@ export class CartService {
 
 	getItems() {
 		// return this.items.slice()
-		// return this.items.slice(1,this.items.length)
 		return [...this.items];
 	}
 

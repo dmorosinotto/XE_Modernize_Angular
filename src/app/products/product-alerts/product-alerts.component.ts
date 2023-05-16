@@ -1,12 +1,17 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { Product } from "@shared/FAKE_products";
+import { Component, EventEmitter, Input, Output, OnInit } from "@angular/core";
+import { Product } from "@app/state/product.service";
 
 @Component({
 	selector: "app-product-alerts",
-	templateUrl: "./product-alerts.component.html"
+	templateUrl: "./product-alerts.component.html",
+	styles: [":host { display: inline-flex }"]
 })
-export class ProductAlertsComponent {
+export class ProductAlertsComponent implements OnInit {
 	@Input() product?: Product;
-	@Input() limit!: number;
 	@Output() notify = new EventEmitter<number>();
+	@Input() limit!: number; //ASSERTION REQUIRED
+
+	ngOnInit(): void {
+		console.assert(this.limit !== null, "MUST specify 'limit' @Input!");
+	}
 }

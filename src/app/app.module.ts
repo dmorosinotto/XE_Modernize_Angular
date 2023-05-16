@@ -4,8 +4,8 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app.route";
-import { httpInterceptorProviders } from "./shared/auth.interceptor";
-import { ShellModule } from "src/app/shell";
+import { ShellModule } from "@app/shell";
+import { httpInterceptorProviders } from "@app/state/auth";
 
 @NgModule({
 	imports: [BrowserModule, HttpClientModule, AppRoutingModule, ShellModule],
