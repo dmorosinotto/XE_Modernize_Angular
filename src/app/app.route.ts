@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
-import { AuthGuard } from "@app/state/auth";
+import { canActivate, canLoad } from "@app/state/auth";
 import { ToggleLoginOutComponent } from "./shell";
 
 export const APP_ROUTES: Routes = [
@@ -9,18 +9,13 @@ export const APP_ROUTES: Routes = [
 	{ path: "login", component: ToggleLoginOutComponent },
 	{
 		path: "products",
-		canLoad: [AuthGuard],
+		canMatch: [canLoad],
 		data: { role: "USER" },
-		loadChildren: () => import("./products/products.route").then(m => m.ProductsLazyModule)
+		loadChildren: () => import("./products/products.route").then(m => m.PRODUCT_ROUTES)
 	},
 	{
 		path: "cart",
-		canActivate: [AuthGuard],
-		loadChildren: () => import("./cart/cart.route").then(m => m.CartLazyModule)
+		canActivate: [canActivate],
+		loadChildren: () => import("./cart/cart.route").then(m => m.CART_ROUTES)
 	}
 ];
-@NgModule({
-	imports: [RouterModule.forRoot(APP_ROUTES, { useHash: true })],
-	exports: [RouterModule]
-})
-export class AppRoutingModule {}

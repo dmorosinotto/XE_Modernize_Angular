@@ -13,12 +13,23 @@ Repo: [https://github.com/dmorosinotto/XE_Modernize_Angular](https://github.com/
 
 --
 
+```diff
+Prova differenza
+class Pippo {
++   srv = inject(Service)    
+-   constructor(id: string, srv: Service) {}
++   constructor(id: string) {}
+}
+```
+
+--
+
 # AGENDA
 
 INTRO: I vari annunci e rilasci di NG
 FEATURE PRINCIPALE DI CUI VOGLIO PARLARE:
     - Standalone Component -(SCAM)-> optional NgModule
-    - inject -> nuova DI + inject helpers (routeParams) + + infer INJTOKEN + DestroyRef + attenzione al runInContext!
+    - inject -> nuova DI + inject helpers (routeParams) + infer INJTOKEN + DestroyRef + attenzione al runInContext!
     - Router -> nuovi pattern LazyLoad + fnGuaard + providers
     - Ottimizzazione (Tree Shaking):
         + provideHttp + withX + fnInterceptor 
@@ -30,7 +41,7 @@ OPINIONI PERSONALI SU ALTRE FEATURES:
     - Elefant in the room: Signals (non son convinto) :-|
 EXTRA:
     - Utilizzo modern _JS tools_ esbuild + vite
-    - Migrazione `ng update` (da provare e problemi: Forms / Standalone)
+    - Migrazione `ng update` (da provare e problemi: Forms / Standalone+ Http ok, ma NON fa migration nuovo provideRoute)
 -   Q & A
 -   Riferimenti
 
@@ -214,6 +225,7 @@ IO aspetterei perchè:
 - idee simili anche per RFC [MiniRX SignalStore](https://github.com/spierala/mini-rx-store/discussions/188) 
 - Novità Angular 16 [GoogleIO video](https://io.google/2023/program/ebab5344-0315-44d2-8923-4571c537e3bb)
 - Riassunto altre novità/[utilità "minori"](https://levelup.gitconnected.com/angular-16-is-making-big-noise-6a06e9808788) Angular16
+- Bellissimo [REPO MANFRED](https://github.com/manfredsteyer/standalone-example-cli/tree/signal-store) con vari esperimenti uso Signal (ultimo signal-store con nested signal e reattività alla SolidJS)
 
 ---
 
@@ -235,6 +247,7 @@ ALCUNI APPROFONDIMENTI:
 Ritorvare articoli su Migrazione `ng update` (da provare e problemi: Forms / Standalone) io suggerisco [SCAM](https://medium.com/marmicode/your-angular-module-is-a-scam-b4136ca3917b) e passagio a mano...
 - Articolo su migrazione standalone su Angular 15 con [schematics](https://timdeschryver.dev/blog/i-tried-the-angular-standalone-migration-and-here-is-the-result) 
 - Problemi migrazione EnterpriseApp -> Legacy comp/lib che non supportano Ivy [ngcc rimosso da V16](https://itnext.io/upgrading-an-enterprise-app-to-angular-16-4a92b1b29906)
+- Bellissimo [VIDEO MANFRED](https://www.youtube.com/watch?v=MaCK8naSH7A ) per ispirazione/concetti talk: Standalone / inject + customconfig / Signal basics
 
 
 ---

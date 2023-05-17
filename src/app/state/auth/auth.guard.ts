@@ -1,26 +1,15 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from "@angular/router";
-import { Observable } from "rxjs";
+import { inject } from "@angular/core";
+import { Router, CanActivateFn, CanMatchFn } from "@angular/router";
 import { AuthService } from "./auth.service";
 
-@Injectable({
-	providedIn: "root"
-})
-export class AuthGuard  {
-	constructor(private auth: AuthService, private router: Router) {}
+export const canActivate: CanActivateFn = () => {
+	const auth = inject(AuthService);
+	return auth.isLoggedIn();
+};
 
-	canActivate(
-		route: ActivatedRouteSnapshot,
-		state: RouterStateSnapshot
-	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		return this.auth.isLoggedIn();
-	}
-
-	canLoad(
-		route: Route,
-		segments: UrlSegment[]
-	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		if (!this.auth.isLoggedIn()) return this.router.parseUrl("/login");
-		else return this.auth.hasRole$(route?.data?.role);
-	}
-}
+export const canLoad: CanMatchFn = route => {
+	const auth = inject(AuthService);
+	const router = inject(Router);
+	if (!auth.isLoggedIn()) return router.parseUrl("/login");
+	else return auth.hasRole$(route?.data?.role);
+};

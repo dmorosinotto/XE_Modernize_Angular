@@ -1,4 +1,12 @@
-import { InjectionToken, Injectable, Inject, Type } from "@angular/core";
+import {
+	InjectionToken,
+	Injectable,
+	Inject,
+	Type,
+	inject,
+	makeEnvironmentProviders,
+	EnvironmentProviders
+} from "@angular/core";
 
 export interface Product {
 	id: number;
@@ -42,14 +50,15 @@ export const PRICE_LIMIT = new InjectionToken<number>(
 
 @Injectable(/*{ providedIn: "root" }*/)
 export class ProductService {
-	constructor(@Inject(PRICE_LIMIT) public LIMIT: InferFrom<typeof PRICE_LIMIT> /*:number*/) {}
+	public LIMIT = inject(PRICE_LIMIT);
 
 	public getAll() {
 		return FAKE_PRODUCTS;
 	}
 }
 
-export const provideProductService = [
-	{ provide: PRICE_LIMIT, useValue: 1 },
-	{ provide: ProductService, useClass: ProductService }
-];
+export const provideProductService = (limit: number) =>
+	makeEnvironmentProviders([
+		{ provide: PRICE_LIMIT, useValue: limit },
+		ProductService //{ provide: ProductService, useClass: ProductService }
+	]);
