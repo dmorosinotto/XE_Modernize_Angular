@@ -1,13 +1,23 @@
-import { Directive, EmbeddedViewRef, Input, TemplateRef, ViewContainerRef, NgModule } from "@angular/core";
+import {
+	Directive,
+	EmbeddedViewRef,
+	Input,
+	TemplateRef,
+	ViewContainerRef,
+	NgModule,
+	Injector,
+	effect
+} from "@angular/core";
 import { AuthService } from "./auth.service";
 import { Subscription } from "rxjs";
 
 @Directive({
-    selector: "[hasRole]",
-    standalone: true
+	selector: "[hasRole]",
+	standalone: true
 })
 export class HasRoleDirective {
 	constructor(
+		private _injector: Injector,
 		private auth: AuthService,
 		private _templateRef: TemplateRef<any>,
 		private _viewContainer: ViewContainerRef
@@ -17,7 +27,18 @@ export class HasRoleDirective {
 	@Input() public set hasRole(role: string) {
 		if (this._role !== role) {
 			this._role = role;
-			this._updateView();
+			//this._updateView();
+			console.warn("CREATE NEW computed + effect");
+			const computedHasRole = this.auth.hasRole(role);
+			effect(
+				() => {
+					let visible = computedHasRole();
+					console.log("NOW VISIBLE", visible, " TO ", role);
+					if (visible) this._viewRef = this._viewContainer.createEmbeddedView(this._templateRef);
+					else this._cleanUp();
+				},
+				{ injector: this._injector }
+			);
 		}
 	}
 
@@ -50,4 +71,3 @@ export class HasRoleDirective {
 }
 
 //SAMPLE SCAM
-
