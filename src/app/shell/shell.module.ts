@@ -6,6 +6,7 @@ import { TopBarComponent } from "./top-bar.component";
 import { ToggleLoginOutComponent } from "./toggle-login-out.component";
 import { HasRoleModule } from "@app/state/auth";
 
+//SAMPLE NGMODULE CORE FEATURE
 @NgModule({
 	declarations: [TopBarComponent, ToggleLoginOutComponent],
 	exports: [TopBarComponent, ToggleLoginOutComponent, HasRoleModule],

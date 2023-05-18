@@ -12,6 +12,7 @@ export const PRODUCT_ROUTES: Routes = [
 	{ path: ":productId", component: ProductDetailsComponent }
 ];
 
+//SAMPLE NGMODULE LAZY
 @NgModule({
 	declarations: [ProductListComponent, ProductDetailsComponent, ProductAlertsComponent],
 	exports: [ProductAlertsComponent],

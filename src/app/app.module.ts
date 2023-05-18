@@ -7,6 +7,7 @@ import { AppRoutingModule } from "./app.route";
 import { ShellModule } from "@app/shell";
 import { httpInterceptorProviders } from "@app/state/auth";
 
+//SAMPLE NGMODULE
 @NgModule({
 	imports: [BrowserModule, HttpClientModule, AppRoutingModule, ShellModule],
 	declarations: [AppComponent],
