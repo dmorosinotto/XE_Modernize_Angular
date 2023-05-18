@@ -27,7 +27,6 @@ export class ShippingComponent extends BaseComponent {
 	}
 }
 
-//SAMPLE SCAM WITH PROVIDERS
 @NgModule({
 	declarations: [ShippingComponent],
 	exports: [ShippingComponent],

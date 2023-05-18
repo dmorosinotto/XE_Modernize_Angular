@@ -14,7 +14,7 @@ export const PRODUCT_ROUTES: Routes = [
 
 @NgModule({
 	declarations: [ProductListComponent, ProductDetailsComponent, ProductAlertsComponent],
-	// exports: [ProductListComponent, ProductDetailsComponent, ProductAlertsComponent],
+	exports: [ProductAlertsComponent],
 	imports: [RouterModule.forChild(PRODUCT_ROUTES), CommonModule],
 	providers: [provideProductService]
 })
