@@ -1,15 +1,17 @@
 import { Component, NgModule } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { CommonModule } from "@angular/common";
+import { CommonModule, NgFor, CurrencyPipe } from "@angular/common";
 import { Router } from "@angular/router";
 
 import { CartService } from "@app/state/cart.service";
-import { ShippingModule } from "./shipping/shipping.component";
+import { ShippingModule, ShippingComponent } from "./shipping/shipping.component";
 
 @Component({
-	selector: "app-cart",
-	templateUrl: "./cart.component.html",
-	styles: ["input.ng-invalid.ng-touched {border: 2px solid red }"]
+    selector: "app-cart",
+    templateUrl: "./cart.component.html",
+    styles: ["input.ng-invalid.ng-touched {border: 2px solid red }"],
+    standalone: true,
+    imports: [NgFor, ReactiveFormsModule, ShippingComponent, CurrencyPipe]
 })
 export class CartComponent {
 	checkoutForm: FormGroup;
@@ -44,8 +46,7 @@ export class CartComponent {
 
 //SAMPLE SCAM
 @NgModule({
-	declarations: [CartComponent],
-	exports: [CartComponent],
-	imports: [ShippingModule, ReactiveFormsModule, CommonModule]
+    exports: [CartComponent],
+    imports: [ShippingModule, ReactiveFormsModule, CommonModule, CartComponent]
 })
 export class CartModule {}

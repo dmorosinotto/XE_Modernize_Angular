@@ -8,8 +8,7 @@ import { HasRoleModule } from "@app/state/auth";
 
 //SAMPLE NGMODULE CORE FEATURE
 @NgModule({
-	declarations: [TopBarComponent, ToggleLoginOutComponent],
-	exports: [TopBarComponent, ToggleLoginOutComponent, HasRoleModule],
-	imports: [CommonModule, RouterModule]
+    exports: [TopBarComponent, ToggleLoginOutComponent, HasRoleModule],
+    imports: [CommonModule, RouterModule, TopBarComponent, ToggleLoginOutComponent]
 })
 export class ShellModule {}

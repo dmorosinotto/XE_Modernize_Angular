@@ -14,9 +14,8 @@ export const PRODUCT_ROUTES: Routes = [
 
 //SAMPLE NGMODULE LAZY
 @NgModule({
-	declarations: [ProductListComponent, ProductDetailsComponent, ProductAlertsComponent],
-	exports: [ProductAlertsComponent],
-	imports: [RouterModule.forChild(PRODUCT_ROUTES), CommonModule],
-	providers: [provideProductService]
+    exports: [ProductAlertsComponent],
+    imports: [RouterModule.forChild(PRODUCT_ROUTES), CommonModule, ProductListComponent, ProductDetailsComponent, ProductAlertsComponent],
+    providers: [provideProductService]
 })
 export class ProductsLazyModule {}
