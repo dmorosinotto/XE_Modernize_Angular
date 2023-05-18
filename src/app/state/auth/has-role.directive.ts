@@ -50,8 +50,4 @@ export class HasRoleDirective {
 }
 
 //SAMPLE SCAM DIRECTIVE
-@NgModule({
-    imports: [HasRoleDirective],
-    exports: [HasRoleDirective]
-})
-export class HasRoleModule {}
+

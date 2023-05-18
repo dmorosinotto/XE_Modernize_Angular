@@ -7,13 +7,12 @@ import { ShippingService, IShipping } from "./shipping.service";
 import { BaseComponent } from "@app/shell/base.component";
 
 @Component({
-    selector: "app-shipping",
-    templateUrl: "./shipping.component.html",
-    styles: [".error { color: red }"]
-    // providers: [ShippingService],
-    ,
-    standalone: true,
-    imports: [NgClass, NgFor, AsyncPipe, CurrencyPipe]
+	selector: "app-shipping",
+	templateUrl: "./shipping.component.html",
+	styles: [".error { color: red }"],
+	providers: [ShippingService],
+	standalone: true,
+	imports: [NgClass, NgFor, AsyncPipe, CurrencyPipe]
 })
 export class ShippingComponent extends BaseComponent {
 	shippingCosts!: Observable<IShipping[]>;
@@ -31,9 +30,4 @@ export class ShippingComponent extends BaseComponent {
 }
 
 //SAMPLE SCAM WITH PROVIDERS
-@NgModule({
-    exports: [ShippingComponent],
-    imports: [CommonModule, ShippingComponent],
-    providers: [ShippingService]
-})
-export class ShippingModule {}
+

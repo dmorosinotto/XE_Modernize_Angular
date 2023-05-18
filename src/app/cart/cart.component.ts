@@ -4,7 +4,7 @@ import { CommonModule, NgFor, CurrencyPipe } from "@angular/common";
 import { Router } from "@angular/router";
 
 import { CartService } from "@app/state/cart.service";
-import { ShippingModule, ShippingComponent } from "./shipping/shipping.component";
+import { ShippingComponent } from "./shipping/shipping.component";
 
 @Component({
     selector: "app-cart",
@@ -45,8 +45,4 @@ export class CartComponent {
 }
 
 //SAMPLE SCAM
-@NgModule({
-    exports: [CartComponent],
-    imports: [ShippingModule, ReactiveFormsModule, CommonModule, CartComponent]
-})
-export class CartModule {}
+

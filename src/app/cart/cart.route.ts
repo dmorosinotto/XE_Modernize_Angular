@@ -1,7 +1,7 @@
 import { Injectable, NgModule } from "@angular/core";
 import { RouterModule, Routes, CanActivate, CanDeactivate, UrlTree } from "@angular/router";
 import { Observable } from "rxjs";
-import { CartComponent, CartModule } from "./cart.component";
+import { CartComponent } from "./cart.component";
 import { CartService } from "@app/state/cart.service";
 
 @Injectable()
@@ -39,7 +39,7 @@ export const CART_ROUTES: Routes = [
 ];
 
 @NgModule({
-	imports: [RouterModule.forChild(CART_ROUTES), CartModule],
+	imports: [RouterModule.forChild(CART_ROUTES)],
 	providers: [CanExitCart, CanOpenCartIfNotEmpty]
 })
 export class CartLazyModule {}
