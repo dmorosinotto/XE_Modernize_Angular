@@ -42,6 +42,7 @@ export class CartComponent {
 	}
 }
 
+//SAMPLE SCAM
 @NgModule({
 	declarations: [CartComponent],
 	exports: [CartComponent],

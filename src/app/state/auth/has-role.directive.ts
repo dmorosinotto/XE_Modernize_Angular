@@ -48,6 +48,7 @@ export class HasRoleDirective {
 	}
 }
 
+//SAMPLE SCAM DIRECTIVE
 @NgModule({
 	declarations: [HasRoleDirective],
 	exports: [HasRoleDirective]
