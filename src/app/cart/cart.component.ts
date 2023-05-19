@@ -1,28 +1,28 @@
-import { Component, NgModule } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { CommonModule, NgFor, CurrencyPipe } from "@angular/common";
+import { NgFor, CurrencyPipe } from "@angular/common";
 import { Router } from "@angular/router";
 
 import { CartService } from "@app/state/cart.service";
 import { ShippingComponent } from "./shipping/shipping.component";
 
 @Component({
-    selector: "app-cart",
-    templateUrl: "./cart.component.html",
-    styles: ["input.ng-invalid.ng-touched {border: 2px solid red }"],
-    standalone: true,
-    imports: [NgFor, ReactiveFormsModule, ShippingComponent, CurrencyPipe]
+	selector: "app-cart",
+	templateUrl: "./cart.component.html",
+	styles: ["input.ng-invalid.ng-touched {border: 2px solid red }"],
+	standalone: true,
+	imports: [NgFor, ReactiveFormsModule, ShippingComponent, CurrencyPipe]
 })
 export class CartComponent {
 	checkoutForm: FormGroup;
-	constructor(private cartSrv: CartService, private formBuilder: FormBuilder, private router: Router) {
-		this.checkoutForm = this.formBuilder.group({
+	constructor(private router: Router) {
+		this.checkoutForm = inject(FormBuilder).group({
 			name: ["", Validators.required],
 			address: "",
 			ship: [0, Validators.min(1)]
 		});
 	}
-
+	cartSrv = inject(CartService);
 	items = this.cartSrv.getItems();
 
 	onSubmit(): void {
@@ -45,4 +45,3 @@ export class CartComponent {
 }
 
 //SAMPLE SCAM
-

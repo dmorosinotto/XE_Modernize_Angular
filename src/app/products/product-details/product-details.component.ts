@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
 import { CartService } from "@app/state/cart.service";
@@ -14,12 +14,9 @@ import { NgIf, CurrencyPipe } from "@angular/common";
 })
 export default class ProductDetailsComponent implements OnInit {
 	product: Product | undefined;
+	cartService = inject(CartService);
 
-	constructor(
-		private route: ActivatedRoute,
-		public cartService: CartService,
-		private productService: ProductService
-	) {}
+	constructor(private route: ActivatedRoute, private productService: ProductService) {}
 
 	ngOnInit() {
 		// First get the product id from the current route.
