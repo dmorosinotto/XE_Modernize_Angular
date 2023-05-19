@@ -10,7 +10,7 @@ export const APP_ROUTES: Routes = [
 		path: "products",
 		canLoad: [AuthGuard],
 		data: { role: "USER" },
-		loadChildren: () => import("./products/products.route").then(m => m.ProductsLazyModule)
+		loadChildren: () => import("./products/products.route").then(m => m.PRODUCT_ROUTES)
 	},
 	{
 		path: "cart",
