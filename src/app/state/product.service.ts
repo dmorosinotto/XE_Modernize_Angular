@@ -1,4 +1,4 @@
-import { InjectionToken, Injectable, Inject, Type } from "@angular/core";
+import { InjectionToken, Injectable, inject } from "@angular/core";
 
 export interface Product {
 	id: number;
@@ -34,7 +34,6 @@ const FAKE_PRODUCTS: Product[] = [
 	}
 ];
 
-export type InferFrom<T> = T extends InjectionToken<infer I> ? I : T;
 export const PRICE_LIMIT = new InjectionToken<number>(
 	"PRICE_LIMIT"
 	/*, { providedIn: "root", factory: () => 700 }*/
@@ -42,7 +41,7 @@ export const PRICE_LIMIT = new InjectionToken<number>(
 
 @Injectable(/*{ providedIn: "root" }*/)
 export class ProductService {
-	constructor(@Inject(PRICE_LIMIT) public LIMIT: InferFrom<typeof PRICE_LIMIT> /*:number*/) {}
+	public LIMIT = inject(PRICE_LIMIT); //automatic infer :number
 
 	public getAll() {
 		return FAKE_PRODUCTS;
