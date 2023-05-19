@@ -11,10 +11,7 @@ export const PRODUCT_ROUTES: Routes = [
 			{ path: "", component: ProductListComponent, pathMatch: "full" },
 			{
 				path: ":productId",
-				loadComponent: () =>
-					import("./product-details/product-details.component").then(
-						standalone => standalone.ProductDetailsComponent
-					)
+				loadComponent: () => import("./product-details/product-details.component")
 			}
 		]
 	}

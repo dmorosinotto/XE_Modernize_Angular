@@ -28,7 +28,7 @@ export class CanExitCart implements CanDeactivate<CartComponent> {
 	}
 }
 
-export const CART_ROUTES: Routes = [
+const CART_ROUTES: Routes = [
 	{
 		path: "",
 		component: CartComponent,
@@ -37,3 +37,4 @@ export const CART_ROUTES: Routes = [
 		canDeactivate: [CanExitCart]
 	}
 ];
+export default CART_ROUTES;

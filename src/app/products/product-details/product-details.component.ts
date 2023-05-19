@@ -6,13 +6,13 @@ import { Product, ProductService } from "@app/state/product.service";
 import { NgIf, CurrencyPipe } from "@angular/common";
 
 @Component({
-    selector: "app-product-details",
-    templateUrl: "./product-details.component.html",
-    styles: [],
-    standalone: true,
-    imports: [NgIf, CurrencyPipe]
+	selector: "app-product-details",
+	templateUrl: "./product-details.component.html",
+	styles: [],
+	standalone: true,
+	imports: [NgIf, CurrencyPipe]
 })
-export class ProductDetailsComponent implements OnInit {
+export default class ProductDetailsComponent implements OnInit {
 	product: Product | undefined;
 
 	constructor(
