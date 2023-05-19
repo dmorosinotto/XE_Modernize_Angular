@@ -1,10 +1,12 @@
 import { Component, inject } from "@angular/core";
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { NgFor, CurrencyPipe } from "@angular/common";
 import { Router } from "@angular/router";
 
 import { CartService } from "@app/state/cart.service";
 import { ShippingComponent } from "./shipping/shipping.component";
+
+export const initFrm = (ctrls: any) => inject(FormBuilder).group(ctrls);
 
 @Component({
 	selector: "app-cart",
@@ -14,14 +16,13 @@ import { ShippingComponent } from "./shipping/shipping.component";
 	imports: [NgFor, ReactiveFormsModule, ShippingComponent, CurrencyPipe]
 })
 export class CartComponent {
-	checkoutForm: FormGroup;
-	constructor(private router: Router) {
-		this.checkoutForm = inject(FormBuilder).group({
-			name: ["", Validators.required],
-			address: "",
-			ship: [0, Validators.min(1)]
-		});
-	}
+	checkoutForm = initFrm({
+		name: ["", Validators.required],
+		address: "",
+		ship: [0, Validators.min(1)]
+	});
+	constructor(private router: Router) {}
+
 	cartSrv = inject(CartService);
 	items = this.cartSrv.getItems();
 
