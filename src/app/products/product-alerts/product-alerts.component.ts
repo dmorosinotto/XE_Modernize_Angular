@@ -3,18 +3,14 @@ import { Product } from "@app/state/product.service";
 import { NgIf } from "@angular/common";
 
 @Component({
-    selector: "app-product-alerts",
-    templateUrl: "./product-alerts.component.html",
-    styles: [":host { display: inline-flex }"],
-    standalone: true,
-    imports: [NgIf]
+	selector: "app-product-alerts",
+	templateUrl: "./product-alerts.component.html",
+	styles: [":host { display: inline-flex }"],
+	standalone: true,
+	imports: [NgIf]
 })
-export class ProductAlertsComponent implements OnInit {
+export class ProductAlertsComponent {
 	@Input() product?: Product;
 	@Output() notify = new EventEmitter<number>();
-	@Input() limit!: number; //ASSERTION REQUIRED
-
-	ngOnInit(): void {
-		console.assert(this.limit !== null, "MUST specify 'limit' @Input!");
-	}
+	@Input({ required: true }) limit!: number; //ASSERTION SU OnINIT NON PIU NECESSARIA
 }

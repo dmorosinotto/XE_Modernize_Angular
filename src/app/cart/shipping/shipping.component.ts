@@ -22,7 +22,7 @@ export class ShippingComponent extends BaseComponent {
 		this.shippingCosts = this.shippingService.getShippingPrices().pipe(this.takeUntilDestroy());
 	}
 
-	@Input() frmCtrl!: FormControl<number>; //strict type check
+	@Input({ required: true }) frmCtrl!: FormControl<number>; //strict type check
 
 	setCost(price: number) {
 		this.frmCtrl.setValue(price);
