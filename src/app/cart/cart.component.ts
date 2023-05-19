@@ -6,7 +6,7 @@ import { Router } from "@angular/router";
 import { CartService } from "@app/state/cart.service";
 import { ShippingComponent } from "./shipping/shipping.component";
 
-export const initFrm = (ctrls: any) => inject(FormBuilder).group(ctrls);
+export const initFrm = <T extends {}>(ctrls: T) => inject(FormBuilder).nonNullable.group<T>(ctrls);
 
 @Component({
 	selector: "app-cart",
@@ -20,7 +20,7 @@ export class CartComponent {
 		name: ["", Validators.required],
 		address: "",
 		ship: [0, Validators.min(1)]
-	});
+	}); // automatic infer Typed Form
 	constructor(private router: Router) {}
 
 	cartSrv = inject(CartService);
@@ -36,7 +36,7 @@ export class CartComponent {
 	}
 
 	get shipCtrl() {
-		return this.checkoutForm.controls["ship"];
+		return this.checkoutForm.controls.ship; // infer FormControl<number>
 	}
 
 	get isSaved() {
