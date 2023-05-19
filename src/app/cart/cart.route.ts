@@ -1,40 +1,24 @@
-import { Injectable, NgModule } from "@angular/core";
-import { RouterModule, Routes, CanActivate, CanDeactivate, UrlTree } from "@angular/router";
-import { Observable } from "rxjs";
+import { inject } from "@angular/core";
+import { Routes, CanDeactivateFn, CanActivateFn } from "@angular/router";
 import { CartComponent } from "./cart.component";
 import { CartService } from "@app/state/cart.service";
 
-@Injectable({ providedIn: "root" })
-export class CanOpenCartIfNotEmpty implements CanActivate {
-	constructor(private cartService: CartService) {}
+export const canOpenCartIfNotEmpty: CanActivateFn = () => {
+	const cartService = inject(CartService); //USO inject PER DI!!
+	return !cartService.isEmpty;
+};
 
-	canActivate(/*
-		route: ActivatedRouteSnapshot,
-		state: RouterStateSnapshot
-	*/): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		return !this.cartService.isEmpty;
-	}
-}
-
-@Injectable({ providedIn: "root" })
-export class CanExitCart implements CanDeactivate<CartComponent> {
-	canDeactivate(
-		component: CartComponent
-		// currentRoute: ActivatedRouteSnapshot,
-		// currentState: RouterStateSnapshot,
-		// nextState?: RouterStateSnapshot | undefined
-	): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-		return component.isSaved;
-	}
-}
+export const canExitCart: CanDeactivateFn<CartComponent> = component => {
+	return component.isSaved;
+};
 
 const CART_ROUTES: Routes = [
 	{
 		path: "",
 		component: CartComponent,
 		pathMatch: "full",
-		canActivate: [CanOpenCartIfNotEmpty],
-		canDeactivate: [CanExitCart]
+		canActivate: [canOpenCartIfNotEmpty],
+		canDeactivate: [canExitCart]
 	}
 ];
 export default CART_ROUTES;
