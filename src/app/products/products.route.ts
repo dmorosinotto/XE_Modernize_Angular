@@ -6,7 +6,7 @@ import { provideProductService } from "@app/state/product.service";
 export const PRODUCT_ROUTES: Routes = [
 	{
 		path: "",
-		providers: [provideProductService],
+		providers: [provideProductService({ limit: 1 })],
 		children: [
 			{ path: "", component: ProductListComponent, pathMatch: "full" },
 			{

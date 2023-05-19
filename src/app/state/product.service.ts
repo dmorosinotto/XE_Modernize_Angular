@@ -1,4 +1,4 @@
-import { InjectionToken, Injectable, inject } from "@angular/core";
+import { InjectionToken, Injectable, inject, makeEnvironmentProviders } from "@angular/core";
 
 export interface Product {
 	id: number;
@@ -48,7 +48,8 @@ export class ProductService {
 	}
 }
 
-export const provideProductService = [
-	{ provide: PRICE_LIMIT, useValue: 1 },
-	{ provide: ProductService, useClass: ProductService }
-];
+export const provideProductService = (config: { limit: number }) =>
+	makeEnvironmentProviders([
+		{ provide: PRICE_LIMIT, useValue: config.limit },
+		{ provide: ProductService, useClass: ProductService }
+	]);
