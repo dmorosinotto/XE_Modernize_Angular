@@ -15,6 +15,6 @@ export const APP_ROUTES: Routes = [
 	{
 		path: "cart",
 		canActivate: [AuthGuard],
-		loadChildren: () => import("./cart/cart.route").then(m => m.CartLazyModule)
+		loadChildren: () => import("./cart/cart.route").then(m => m.CART_ROUTES)
 	}
 ];

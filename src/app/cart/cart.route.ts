@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { CartComponent } from "./cart.component";
 import { CartService } from "@app/state/cart.service";
 
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class CanOpenCartIfNotEmpty implements CanActivate {
 	constructor(private cartService: CartService) {}
 
@@ -16,7 +16,7 @@ export class CanOpenCartIfNotEmpty implements CanActivate {
 	}
 }
 
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class CanExitCart implements CanDeactivate<CartComponent> {
 	canDeactivate(
 		component: CartComponent
@@ -37,9 +37,3 @@ export const CART_ROUTES: Routes = [
 		canDeactivate: [CanExitCart]
 	}
 ];
-
-@NgModule({
-	imports: [RouterModule.forChild(CART_ROUTES)],
-	providers: [CanExitCart, CanOpenCartIfNotEmpty]
-})
-export class CartLazyModule {}
