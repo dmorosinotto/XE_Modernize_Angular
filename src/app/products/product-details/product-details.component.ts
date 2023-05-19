@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, Injector, runInInjectionContext } from "@angular/core";
+import { Component, OnInit, inject, Input } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
 import { CartService } from "@app/state/cart.service";
@@ -21,18 +21,11 @@ export const injectPar = (name: string) => {
 export default class ProductDetailsComponent implements OnInit {
 	product: Product | undefined;
 	cartService = inject(CartService);
+	productService = inject(ProductService);
+	@Input() productId!: string; //DEVE MATCHARE IL NOME DEL RouteParams!!
 
-	constructor(private productService: ProductService) {}
-
-	injector = inject(Injector); //SOLO NG16! SUPER-TRICK PER CATTURARE INJECTOR CORRENTE!
 	ngOnInit() {
-		// SENZA QUESTO DA ERRORE RUNTIME CHIAMANDO injectPar FUNZIONE inject() HA BISOGNO CONTESTO!!
-		runInInjectionContext(this.injector, () => { //SOLO NG16!
-			// First get the product id from the current route.
-			const productIdFromRoute = Number(injectPar("productId"));
-			// Find the product that correspond with the id provided in route.
-			this.product = this.productService.getAll().find(product => product.id === productIdFromRoute);
-		});
+		this.product = this.productService.getAll().find(product => product.id === +this.productId);
 	}
 
 	Buy(product: Product) {
