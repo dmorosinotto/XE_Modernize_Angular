@@ -8,7 +8,7 @@ export const APP_ROUTES: Routes = [
 	{ path: "login", component: ToggleLoginOutComponent },
 	{
 		path: "products",
-		canMatch: [canLoad],
+		// canMatch: [canLoad],
 		data: { role: "USER" },
 		loadChildren: () => import("./products/products.route").then(m => m.PRODUCT_ROUTES)
 	},
