@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, signal, computed, effect } from "@angular/core";
 
 import { CartService } from "@app/state/cart.service";
 import { NgClass } from "@angular/common";
@@ -19,4 +19,17 @@ import { RouterLink } from "@angular/router";
 })
 export class TopBarComponent {
 	cartService = inject(CartService);
+
+	constructor() {
+		//ESEMPIO BASE SIGNAL
+		const counter = signal(0); //infer WritableSignal<number>
+		const isOdd = computed(() => !!(counter() % 2)); //infer Signal<boolean>
+		effect(() => {
+			//VIENE AUTOMATICAMENTE RICALCOLATO NOTATE () PER LEGGERE
+			console.log(`Adesso ${counter()} è ${isOdd() ? "dis" : ""}pari`);
+		});
+
+		counter.set(42);
+		counter.update(c => c + 1);
+	}
 }
