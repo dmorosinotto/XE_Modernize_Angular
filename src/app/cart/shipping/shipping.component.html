@@ -4,7 +4,7 @@
 
 <div
   class="shipping-item"
-  *ngFor="let shipping of (shippingCosts | async)"
+  *ngFor="let shipping of shippingCosts()"
   (click)="setCost(shipping.price)"
 >
   <span [style.color]="frmCtrl.value == shipping.price ? 'green' : 'black'">{{

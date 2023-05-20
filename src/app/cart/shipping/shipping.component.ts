@@ -1,10 +1,9 @@
-import { Component, Input, NgModule } from "@angular/core";
-import { CommonModule, NgClass, NgFor, AsyncPipe, CurrencyPipe } from "@angular/common";
+import { Component, Input, inject } from "@angular/core";
+import { NgClass, NgFor, AsyncPipe, CurrencyPipe } from "@angular/common";
 import { FormControl } from "@angular/forms";
-import { Observable } from "rxjs";
 
 import { ShippingService, IShipping } from "./shipping.service";
-import { BaseComponent } from "@app/shell/base.component";
+import { toSignal } from "@angular/core/rxjs-interop";
 
 @Component({
 	selector: "app-shipping",
@@ -14,13 +13,11 @@ import { BaseComponent } from "@app/shell/base.component";
 	standalone: true,
 	imports: [NgClass, NgFor, AsyncPipe, CurrencyPipe]
 })
-export class ShippingComponent extends BaseComponent {
-	shippingCosts!: Observable<IShipping[]>;
-
-	constructor(private shippingService: ShippingService) {
-		super();
-		this.shippingCosts = this.shippingService.getShippingPrices().pipe(this.takeUntilDestroy());
-	}
+export class ShippingComponent {
+	shippingCosts = toSignal(
+		inject(ShippingService).getShippingPrices(), //unsubcribe AUTOMATICO GARANTITO toSignal
+		{ initialValue: [] as IShipping[] } //DEFINISCE 1° VALORE EMESSO - ALTRIMENTI undefined
+	); //infer Singal<IShipping[]>
 
 	@Input({ required: true }) frmCtrl!: FormControl<number>; //strict type check
 
