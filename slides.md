@@ -48,6 +48,8 @@ theme: white
 
 ## Le basi @NgModule
 
+![NgModule](images/ngmodule.jpeg)
+
 - Igor: _“L’errore più grande del Team di Angular”_
 - Ma a cosa serve l’@NgModule:
     - definizione del contesto di compilazione/scope del template: **declarations, imports, exports**
@@ -63,6 +65,8 @@ theme: white
 
 ## SCAM
 
+![SCAM](images/scam.jpeg)
+
 > Soluzione tampone fino a NG13: 
 Perchè io e [altri](https://medium.com/marmicode/your-angular-module-is-a-scam-b4136ca3917b) è da un bel pò che vorremmo toglierci di torno gli @NgModule - alla fine ne facciamo centinaia :-/   
 
@@ -75,6 +79,8 @@ INLINE nello stesso file del `@Component` per facilitare il riuso+definizione de
 --
 
 ## Standalone @Component
+
+![standalone](images/standalone.jpeg)
 
 ```diff
 @Component({
@@ -96,6 +102,10 @@ COMPONENT PILAR: Finalmente i `@Component` sono i **VERI BUILDING BLOCK** delle 
 
 ---
 
+![MIGRAZIONE standalone](images/migrate.jpeg)
+
+--
+
 ## MIGRAZIONE - CLI 15.2+
 
 ```bash
@@ -113,28 +123,32 @@ Migrazione in 3 passi + richiede qualche **FIX a mano**:
 ### [DEMO 12](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/11...12) fix SCAM + 2°
 ### [DEMO 13](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/12...13) fix App.Comp + 3° 
 
----
+--
 
 ## StandaloneAPI - provideHttp
 
-- La migrazione sistema `bootstrapApplication` + usa `provideHttp` ma **NO ROUTING** nuovo!?!
+- La migrazione sistema `bootstrapApplication` + usa `provideHttp` ma **NON ROUTING** nuovo!?!
 - Alcune modifiche che possiamo fare: 
-    - cambiare AuthInterceptor riscrivendolo **funzionale** + uso di _inject_ per la DI!
-    - utilizzo `withInterceptors` per caricare direttamente le _HttpInterceptorFn_ in alternativa a _withInterceptorsFromDi_ che usava la vecchia class.
+    - cambiare AuthInterceptor riscrivendolo in modo **funzionale** + usando _inject()_ per la DI!
+    - utilizzare `withInterceptors` per caricare direttamente la _HttpInterceptorFn_ in alternativa a _withInterceptorsFromDi_ che usava la vecchia class.
 
 ### [DEMO 20](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/13...20) provideHttp + InterceptorFn
 
 ---
 
+![REFACTOR StandaloneAPI](images/refactor.jpeg)
+
+--
+
 ## provideRouter + fnGuard
 
 - Per migliorare "tree-shaking" possiamo usare **provideRouter** ### [DEMO 30](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/20...30)
 - Nuova sintassi **Lazy** `loadChildren` che punta direttamente a _ROUTES_ ### [DEMO 31](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/30...31)
-- Utilizzo dei `providers` direttamente nelle _Route_ (elimino NgModule) ### [DEMO 32](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/31...32)
-- Possibilità caricare direttamente `loadComponent` -> Standalone Component ### [DEMO 33](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/32...33) + posso usare `export default` ### [DEMO 34](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/33...34)
+- Possiamo definire `providers` direttamente nelle _Route_ (elimino NgModule) ### [DEMO 32](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/31...32)
+- Possiamo caricare direttamente `loadComponent` -> Standalone Component ### [DEMO 33](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/32...33) + Semplifico con `export default` ### [DEMO 34](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/33...34)
 - Semplifico scrittura RouteGuard `canXYZ` in modo **funzionale**! ### [DEMO 35](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/34...35) ### [DEMO 36](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/35...36)
 
----
+--
 
 ## NEW DI - inject() [DEMO 40](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/36...40)
 
@@ -144,19 +158,19 @@ export class InAComponentOrService {
 +   someService = inject(SomeService); //NOW you can use field=inject
 }
 ```
-- Vantaggio: **infer** automatico del tipo di ritorno (utile per `InjectionToken` _type-safe_) ### [DEMO 41](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/40...41)
+- Vantaggi: **infer** automatico del tipo di ritorno (utile per `InjectionToken` _type-safe_) ### [DEMO 41](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/40...41)
 - Semplifica caso di classi Ereditate **NON** ho più bisogno di ripassare dipendeze `super(srvBase)`
 - Possibile scrivere **helper** per riutilizzo logica `injectFn` vedi ### [DEMO 42 - initFrm()](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/41...42) 
 - ma Attenzione a dove chiamiamo l'helper _injectPar()_ può servire `runInInjectionContext` [DEMO 43](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/42...43)
-- Nuovi DI pattern utilizzo provideXXX con Config ### [DEMO 44 - initFrm()](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/43...44) 
+- Nuovi **DI pattern** esempio _provideXXX+Config_ [DEMO 44](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/43...44) 
 
 ---
 
-## Typed ReactiveForms [DEMO 45](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/44...45)
+### Typed ReactiveForms [DEMO 45](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/44...45)
 
 ![INTELLISENCE](images/intellisence.gif)
 
-> Secondo me 👎 1) Sbagliato Naming! 2) Migra `Untyped` 3) troppo **Incasinati** gli oggetti/tipi _strict_ che hanno scritto! 4) **Troppo tardi**! _dopo 7 anni_ molti si son fatti [altre soluzioni](https://github.com/ngneat/reactive-forms) soprattutto per gestire [Form dinamiche](https://formly.dev/)!
+SECONDO ME 👎 1) Sbagliato Naming! 2) Migra `Untyped` 3) troppo **Incasinati** gli oggetti/tipi _strict_ che hanno scritto! 4) **Troppo tardi**! _dopo 7 anni_ molti si son fatti [altre soluzioni](https://github.com/ngneat/reactive-forms) soprattutto per gestire [Form dinamiche](https://formly.dev/)!
 
 --
 
@@ -186,7 +200,8 @@ export class MenuWithTooltipComponent { }
 --
 
 ## NgOptimizedImage ###[DOCS](https://angular.io/api/common/NgOptimizedImage)
-- Utilizzo tag `<img [ngSrc]=...>` per migliorare _LCP_ e gestire in modo ottimale caricamento immagini (preload/lazy) con possibilità di impostare _providers_ **IMAGE_LOADER** per utilizzare CDN (es: Cloudflare) o di ContentManagment (es: Cloudinary)
+- Utilizzo tag `<img [ngSrc]=...>` per migliorare _LCP_ e gestire in modo ottimizzato il caricamento immagini (preload/lazy) 
+- possibilità di impostare _providers_ **IMAGE_LOADER** per utilizzare CDN (es: Cloudflare) o servizi di ContentManagment (es: Cloudinary)
 
 ![LCP](images/lcp.png)
 
@@ -194,76 +209,105 @@ export class MenuWithTooltipComponent { }
 
 ## MIGRARE A NG16 
 
-La migrazione a NG16 porta alcune **novità utili**:
 ```
 ng update @angular/cli@16 @angular/core@16
 ```
 
+La migrazione a NG16 porta alcune **novità utili**:
 - `runInInjectionContext` **fix** _injPar()_ [DEMO 46](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/45...46)
 -  `withComponentInputBinding` [DEMO 47](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/46...47)
 - @Input({**required**}) con assert automatico [DEMO 48](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/47...48)
-- `DestoryRef` per gestire dinamicamente OnDestroy -> utile per gestire tramite _inject()_ il pattern **takeUntilDestory** [DEMO 49](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/48...49)
-
--- 
-
-# SIGNALS: "Elefant in the room"
-Spiegare le basi: è una nuova PRIMITIVA per gestire REACTIVITY -> con lo scopo di miglioare la changeDetection rendendola puntuale!
-Praticamente è: 
-- un contenitore di valori (Producer/Consumer + track deps & Notify)
-- che espone un getter () che ritorna in modo efficace "memoized" il valore corrente, ma internamente fa anche il tracciamento automatico di chi lo va ad utilizzare/leggere
-- ha una serie di metodi per cambiare valore: set/update/mutate che scatena Notifiche di cambiamento, per far partire auto-ricalcolo Lazy (push/pull che dovrebbe garantire "glitch-free")
-
-Opinione un pò "contrastante" perchè:
-0. Mi piace **computed** + richiamo () su template no problem
-1. Non è ancora chiaro come usarlo / anti-pattern (vedi gestione async / effect con writeSignal)
-2. Il grosso vantaggio arriverà quando avremo Signal component v17-18
-3. In prima battuta potrebbe venire comodo per avere nuovo modo di evitare subscription |async usando toSignal(obs) che gestisce in automatico unsubscribe e inolte mi da subito disponibile lato codice/template il valore corrente così da scrivere logica imperativa / computed senza incorrere errori doble-subscribe!
-4. Forse essendo una primitiva reactivity avremo i maggiori vantaggi nelle integrazioni di nuove lib per statemanagemnt -> ritorno Signal al posto di Obs vedi ngRxSignalStore
-5. Comunque richiede una riscrittura manuale +/- pesante del codice che attualmente è organizzato in base agli Observable RxJS...
-
-Comunque sono sicuramente da tenere d'occhio in questi 1-2anni per capirli bene e prepararsi ad utilizzarli al meglio quando sarà completo il quadro di utilizzo e i vantaggi: Granular CD + Zoneless!
+- `DestoryRef` per gestire dinamicamente OnDestroy -> utile per implementare tramite _inject()_ il pattern **takeUntilDestory** [DEMO 49](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/48...49)
 
 --
 
-## **REF / SPUNTI**
-- [RFC Signal](https://github.com/angular/angular/discussions/49685)
-- Manfred [Video uso/conversine](https://www.youtube.com/live/7wfwlAIY4jE?feature=share)
-- Bell'articolo che riassume Signal e meccanismo [Push/Pull](https://priyank-bhardwaj.medium.com/how-angular-signals-solves-an-age-old-problem-ae7ec60f042f) di aggiornamento!
-- Signal demystified articolo per capire quirks [Tomas Trajan](https://angularexperts.io/blog/angular-signals-push-pull)
-- DOCS Ufficiale NG16 [Signals](https://rc.angular.io/guide/) + [rxjs-interop](https://rc.angular.io/guide/rxjs-interop)  
-- ESEMPIO NG16 [NgRxSignalStore Playground](https://github.com/dmorosinotto/NG16-signal-store-playground)  
-- RFC NGRX integrazione [selectSignal](https://github.com/ngrx/platform/discussions/3843) + nuovo [SignalStore](https://github.com/ngrx/platform/discussions/3796)  
-- Rilascio NGRX v16 [selectSignal](https://dev.to/ngrx/announcing-ngrx-v16-integration-with-angular-signals-functional-effects-standalone-schematics-and-more-5gk6)
-- idee simili anche per RFC [MiniRX SignalStore](https://github.com/spierala/mini-rx-store/discussions/188) 
-- Novità Angular 16 [GoogleIO video](https://io.google/2023/program/ebab5344-0315-44d2-8923-4571c537e3bb)
-- Riassunto altre novità/[utilità "minori"](https://levelup.gitconnected.com/angular-16-is-making-big-noise-6a06e9808788) Angular16
-- Bellissimo [REPO MANFRED](https://github.com/manfredsteyer/standalone-example-cli/tree/signal-store) con vari esperimenti uso Signal (ultimo signal-store con nested signal e reattività alla SolidJS)
+## SIGNAL - "The 🐘 in the room"
+> E' una nuova **PRIMITIVA REACTIVITY** -> con lo scopo di migliorare/rendere la `changeDetection` **puntuale**!
+
+```typescript
+const counter = signal(0); //infer WritableSignal<number>
+const isOdd = computed(() => !!(counter() % 2)); //infer Signal<boolean>
+
+counter.set(42);            //RESETTA VALORE
+counter.update(c => c + 1); //AGGIORNA VALORE
+
+effect(() => { //VIENE RICALCOLATO AUTOMATICAMENTE + NOTATE () PER LEGGERE VALORE
+    console.log(`Adesso ${counter()} è ${isOdd()?"dis":""}pari`);
+});
+```
+### [DEMO 50](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/49...50) Signal base
+
+--
+
+#### Producer/Consumer + track deps & Notify
+
+- Praticamente è un **contenitore di valori**
+- che espone un **getter** `()` che ritorna in modo efficace _"memoized"_ il valore corrente, ma internamente fa anche il tracciamento automatico di chi lo va ad utilizzare/leggere -> **computed/effect**
+- ha una serie di metodi per cambiare valore: `set/update/mutate` che scatenano **Notifiche** di cambiamento, e fanno partire _"auto-ricalcolo Lazy"_ dei **computed** ed **effect** (push/pull + glitch-free)  
+
+### [DEMO 51](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/50...51) signal authToken + toObservable()
+
+--
+
+### INTEROP con OBS$ [DEMO 52](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/51...52)
+
+```typescript
+import { toObservable, toSignal } from "@angular/core/rxjs-interop";
+```
+
+- `toObservable(SIGNAL) -> OBS<T>` Internamente usa un **effect** per reagire ai valori letti dal SIGNAL e pubblicarli sullo stream in uscita --> NECESSITA di esser chiamato in un _InjectionContext_ o in alternativa passare option: `{injector}`
+- `toSignal(OBS) -> SIGNAL<T|undefined>` Internamente gestisce in **automatico unsubscribe** dell'Observable! All'inizio emette undefined perchè Observable è _lazy_ ma signal è _syncrono_ , ammeno che non si passi option `{initialValue}`
+
+### [DEMO 52](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/51...52) toSignal() al posto di |async
+
+--
+
+### Opinione un pò "contrastante":
+
+PRO: 
+ 
+1. Ma mi piace **computed** + richiamo `()` su template!
+2. In prima battuta potrebbe venire comodo per avere nuovo modo di evitare _subscription |async_ usando `toSignal(obs$)` che gestisce in **automatico unsubscribe**
+3. Forse essendo una "primitiva reactivity" avremo i maggiori vantaggi nelle integrazioni di nuove lib per **statemanagemnt** -> ritorno `Signal` al posto di Obs$ vedi [ngRxSignalStore](https://github.com/dmorosinotto/NG16-signal-store-playground)
+### [DEMO 53](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/52...53) exp dynamic computed
+
+--
+
+CONTRO: ### [DEMO 54](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/53...54) exp dynamic effect
+1. **NON** è ancora chiarissimo come usarli / **anti-pattern** (vedi gestione async / effect con writeSignal)
+2. I grossi vantaggi (CD granulare)  arriveranno in **FUTURO** con `Signal component` NG 17-18+ 
+3. Richiede una **riscrittura** manuale +/- pesante del codice che attualmente è organizzato in base agli Observable RxJS...
+
+Comunque sono sicuramente da tenere d'occhio in questi 1-2anni per capirli bene e prepararsi ad utilizzarli al meglio quando sarà completo il quadro!
 
 ---
 
-
-## Extra: utilizzo _modern JS tools_
+### Extra: utilizzo _modern JS tools_
 
 -   esbuild 🤯
 -   vite 💚 ⚡️
--   abilitato da standalone + inject vedi [articolo](https://marmicode.io/blog/versatile-angular) + [repo](https://github.com/dmorosinotto/Angular_Vite) per provare dal vivo la differenza
+-   abilitato da standalone + inject 
+```
 
-
----
-
-
-## Q&A + REFERENCE
-
-Le "mie" nuove Best Practices: standalone + inject + helper fn + pnpm + vite + esbuild
-ALCUNI APPROFONDIMENTI:
-
-- Bellissimo [VIDEO MANFRED](https://www.youtube.com/watch?v=MaCK8naSH7A ) per ispirazione/concetti talk: Standalone / inject + customconfig / Signal basics
+```
+> Le "mie" nuove Best Practices: standalone + inject + helper fn + pnpm + vite + esbuild
 
 ---
 
-## CONCLUSIONI
-SPECULAZIONI SUL FUTURO (Magari per le conclusioni...)
-Futuro v16 Signal (grande cambio ma non son sicuro perchè Rx molto usato&odiato) stanno seguendo stessi passi: Apr 2023 Alex parla dei concetti di Signal -> RFC pubblica v16 Mag 2023 preview -> entro fine anno 2023-2024 v17 (forse introduzione signal component)/v18+ rilascio completo Signal (SUPPOSIZIONI ma sarà lungo tempo x adozione perchè cambia radicale, pattern non ancora ben chiari in più difficile migrare codebase da Rx->Signal, magari viene comodo x sostiture subscribtion |async usando toSignal, cmq è una primitiva e forse sarà utile "piu utile" nelle nuove lib di Statemanagement)
+## CONCLUSIONI + Q&A
+- Come abbiamo visto dopo un periodo stagnante, Angular negli ultimi 2anni ha avuto un grosso speedup nell'introduzione di nuove feature! Nuove funzionalità che lo hanno messo al passo con i tempi e che lo mantengono un **framework moderno**, forse un po' **meno "opinionated"** ma comunque hanno sempre posto la giusta attenzione alla **retro compatibilità** vedi quanto successo con Standalone!
+
+--
+
+- Per il Futuro di Signal stanno seguendo stessi passi: introduzione dell'idea + discussione pubblica RFC e poi si va in preview e ci vogliono mediamente almeno 2 versioni per l'addozione...
+Quindi posso supporre che ci vorrano almeno fino a fine 2023 per una V17 in cui Signal sia più stabile e poi inizio/meta 2024 per una V18+ in cui si vedano i veri vantaggi di Signal, o forse anche di più! 
+- Perchè come per IVY il passaggio "zone-less" con un nuovo sistema di ChangeDetection Granuale è sicuramente qualcosa di pesante cambiare e che impegnerà molto il Team di Angular per esser implementato soprattutto pensando alla retro compatibilità/coesistenza con l'esistente. 
+
+--
+
+- I vantaggi promessi sono interessanti e vedo fermento nella community per questo, anche se sicuramente richiederà anche da parte nostra degli sforzi/cambiamenti non banali per usarlo. 
+Comunque l'unico modo che io conosco per ridurre l'impatto di un cambio così importante è quello di partire informati, c'è poco da fare il mondo non si ferma e noi dobbiamo tenerci al passo e cercare di anticipare per quanto possibile le direzioni e per farlo bisogna studiare e darci il tempo di capire come usarlo/sfruttarlo quando sarà disponibile!
+Così sapete cosa fare e non annoiarvi nei prossimi 2anni, o eventualemnte speare che ChatGPT10 faccia tutto per noi 🙃
 
 ---
 
