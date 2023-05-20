@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from "@angular/core";
+import { Injectable, Injector, Signal, computed, inject, signal } from "@angular/core";
 import { toObservable } from "@angular/core/rxjs-interop";
 import { HttpRequest } from "@angular/common/http";
 import { Observable } from "rxjs";
@@ -13,13 +13,16 @@ export class AuthService {
 
 	public isLogged$ = toObservable(this.isLoggedIn);
 
+	private _injector = inject(Injector); //NECESSARIO PER AVER CONTESTO PER toObservable
 	public hasRole$(role?: string): Observable<boolean> {
-		return this.isLogged$.pipe(
-			map(token => {
-				if (!token) return false; //FAKE LOGIC
-				return !((role?.length ?? 0) % 2);
-			})
-		);
+		//ALTRIMENTI IL METODO A RUNTIME ESPLODEVA PERCHE' USA runInInjectionContext INTERNAMENTE
+		return toObservable(this.hasRole(role), { injector: this._injector });
+	}
+	public hasRole(role?: string): Signal<boolean> {
+		return computed(() => {
+			if (!this.isLoggedIn()) return false;
+			return !((role?.length ?? 0) % 2);
+		});
 	}
 
 	public Login(username?: string, password?: string) {

@@ -11,5 +11,5 @@ export const canLoad: CanMatchFn = route => {
 	const auth = inject(AuthService);
 	const router = inject(Router);
 	if (!auth.isLoggedIn()) return router.parseUrl("/login");
-	else return auth.hasRole$(route?.data?.role);
+	else return auth.hasRole(route?.data?.role)(); //LEGGO VALORE DA computed -> boolean
 };
