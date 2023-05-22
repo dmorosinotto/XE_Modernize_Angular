@@ -3,6 +3,15 @@
 XE Modernize Angular - Session
 
 -   My [Slides](slides.md) in 🇮🇹
+-   If you want to follow all the _migration steps_ that I've done to upgrade my sample application from **NG13 -> NG15 + Standalone -> NG16 + Signal** execute this:
+
+```terminal
+git clone https://github.com/dmorosinotto/XE_Modernize_Angular
+cd XE_Modernize_Angular
+git fetch --all --tags
+
+pnpm install
+```
 
 ---
 

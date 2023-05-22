@@ -229,7 +229,7 @@ Opinione un pò "contrastante" perchè:
 2. Il grosso vantaggio arriverà quando avremo Signal component v17-18
 3. In prima battuta potrebbe venire comodo per avere nuovo modo di evitare subscription |async usando toSignal(obs) che gestisce in automatico unsubscribe e inolte mi da subito disponibile lato codice/template il valore corrente così da scrivere logica imperativa / computed senza incorrere errori doble-subscribe!
 4. Forse essendo una primitiva reactivity avremo i maggiori vantaggi nelle integrazioni di nuove lib per statemanagemnt -> ritorno Signal al posto di Obs vedi ngRxSignalStore
-5. Comunque richiede una riscrittura manuale +/- pesante del codice che attualmente è organizzato in base agli Observable RxJS...
+5. Però richiede una riscrittura manuale +/- pesante del codice che attualmente è organizzato in base agli Observable RxJS...
 
 Comunque sono sicuramente da tenere d'occhio in questi 1-2anni per capirli bene e prepararsi ad utilizzarli al meglio quando sarà completo il quadro di utilizzo e i vantaggi: Granular CD + Zoneless!
 
@@ -248,6 +248,7 @@ Comunque sono sicuramente da tenere d'occhio in questi 1-2anni per capirli bene 
 - Novità Angular 16 [GoogleIO video](https://io.google/2023/program/ebab5344-0315-44d2-8923-4571c537e3bb)
 - Riassunto altre novità/[utilità "minori"](https://levelup.gitconnected.com/angular-16-is-making-big-noise-6a06e9808788) Angular16
 - Bellissimo [REPO MANFRED](https://github.com/manfredsteyer/standalone-example-cli/tree/signal-store) con vari esperimenti uso Signal (ultimo signal-store con nested signal e reattività alla SolidJS)
+- Bel [Video Confronto](https://youtu.be/iA6iyoantuo) BehaviurSubject <-> Signal
 
 ---
 
@@ -268,7 +269,7 @@ Le "mie" nuove Best Practices: standalone + inject + helper fn + pnpm + vite + e
 ALCUNI APPROFONDIMENTI:
 
 - Bellissimo [VIDEO MANFRED](https://www.youtube.com/watch?v=MaCK8naSH7A ) per ispirazione/concetti talk: Standalone / inject + customconfig / Signal basics
-
+- Bel [Video Confronto](https://youtu.be/iA6iyoantuo) BehaviurSubject <-> Signal
 
 ---
 
