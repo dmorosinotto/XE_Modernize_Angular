@@ -95,19 +95,19 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"configurations": {
-						"production": {
-							"browserTarget": "XE-Modernize-Angular:build:production"
+            "production": {
+              "buildTarget": "XE-Modernize-Angular:build:production"
 						},
-						"development": {
-							"browserTarget": "XE-Modernize-Angular:build:development"
+            "development": {
+              "buildTarget": "XE-Modernize-Angular:build:development"
 						}
 					},
 					"defaultConfiguration": "development"
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
-					"options": {
-						"browserTarget": "XE-Modernize-Angular:build"
+          "options": {
+            "buildTarget": "XE-Modernize-Angular:build"
 					}
 				}
 			}
