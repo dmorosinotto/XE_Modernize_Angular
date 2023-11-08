@@ -1,20 +1,24 @@
 <h2>Products</h2>
 
-<div *ngFor="let product of products">
-	<h3>
-		<a [title]="product.name + ' details'" [routerLink]="['/products', product.id]">
-			>
-			{{ product.name }}
-		</a>
-	</h3>
+@for(product of products; track product.id) {
+<div>
+    <h3>
+        <a [title]="product.name + ' details'" [routerLink]="['/products', product.id]">
+            >
+            {{ product.name }}
+        </a>
+    </h3>
 
-	<p *ngIf="product.description; else nodesc">Description: {{ product.description }}</p>
+    @if(product.description) {
+    <p>Description: {{ product.description }}</p>
+    } @else {
+    <span class="red">2 boring years to stabilize IVY EVRYWHERE...</span>
+    }
 
-	<button type="button" (click)="share(product)">Share</button>
-
-	<app-product-alerts [limit]="price_limit" [product]="product" (notify)="onNotify($event)"> </app-product-alerts>
+    <button #btn type="button" (click)="share(product)">Share</button>
+    @defer(on hover(btn), timer(5000ms)) {
+    <app-product-alerts [limit]="price_limit" [product]="product" (notify)="onNotify($event)"> </app-product-alerts>
+    } @placeholder { <marquee>wait for it!</marquee> }
+    <!--@loading { loading... } @error { <u>OH NOO!!!</u> } -->
 </div>
-
-<ng-template #nodesc>
-	<span class="red">2 boring years to stabilize IVY EVRYWHERE...</span>
-</ng-template>
+}
