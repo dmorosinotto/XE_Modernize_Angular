@@ -7,30 +7,31 @@ import { NgIf } from "@angular/common";
 @Component({
     selector: "app-toggle-login-out",
     template: `
-		<p *ngIf="!auth.isLoggedIn(); else logout">
-			Welcome to <b>{{ ver }}</b
-			>, press button to procede...<br />
-			<button (click)="Login()">Login</button>
-		</p>
-		<ng-template #logout>
-			<button (click)="Logout()">LOGOUT</button>
-		</ng-template>
-	`,
+        @if(!auth.isLoggedIn()) {
+        <p>
+            Welcome to <b>{{ ver }}</b
+            >, press button to procede...<br />
+            <button (click)="Login()">Login</button>
+        </p>
+        } @else {
+        <button (click)="Logout()">LOGOUT</button>
+        }
+    `,
     styles: ["button { background-color: black }"],
     standalone: true,
-    imports: [NgIf]
+    imports: [NgIf],
 })
 export class ToggleLoginOutComponent {
-	ver = `ver. ${VERSION.full}`;
-	constructor(public auth: AuthService, private router: Router) {}
+    ver = `ver. ${VERSION.full}`;
+    constructor(public auth: AuthService, private router: Router) {}
 
-	Login() {
-		this.auth.Login();
-		this.router.navigateByUrl("/");
-	}
+    Login() {
+        this.auth.Login();
+        this.router.navigateByUrl("/");
+    }
 
-	Logout() {
-		this.auth.Logout();
-		this.router.navigate(["login"]);
-	}
+    Logout() {
+        this.auth.Logout();
+        this.router.navigate(["login"]);
+    }
 }
