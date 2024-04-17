@@ -1,6 +1,6 @@
 <!-- <p *ngIf="product && product.price > 700"> -->
-@if (product) {
-<p *ngIf="product.price < limit">
-  <button type="button" (click)="notify.emit(product.price)">Notify Me</button>
+@if (product()) {
+<p *ngIf="showNotifyButton()">
+    <button type="button" (click)="notify.emit(product()!.price)">Notify Me</button>
 </p>
 }
