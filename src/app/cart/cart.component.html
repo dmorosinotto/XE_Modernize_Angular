@@ -17,7 +17,8 @@
         <input id="address" type="text" formControlName="address" />
     </div>
 
-    <app-shipping [frmCtrl]="shipCtrl"></app-shipping>
+    <app-shipping [cost]="shipCtrl.value" (costChange)="shipCtrl.setValue($event)"></app-shipping>
+    <!-- ALTERNATIVE TWO-WAY DATABIND TO SIGNAL <app-shipping [(cost)]="$shipCost" /> -->
 
     <button [disabled]="checkoutForm.invalid" class="button" type="submit">Purchase</button>
 </form>
