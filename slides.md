@@ -256,7 +256,7 @@ effect(() => {
 
 -   Praticamente è un **contenitore di valori**
 -   che espone un **getter** `()` che ritorna in modo efficace _"memoized"_ il valore corrente, ma internamente fa anche il tracciamento automatico di chi lo va ad utilizzare/leggere -> **computed/effect**
--   ha una serie di metodi per cambiare valore: `set/update` che scatenano **Notifiche** di cambiamento, e fanno partire _"auto-ricalcolo Lazy"_ dei **computed** ed **effect** (push/pull + glitch-free)
+-   ha una serie di metodi per cambiare valore: `set/update` che scatenano **Notifiche** di cambiamento, e fanno partire _"auto-ricalcolo Lazy"_ dei **computed LIVE** ed **effect** (push/pull + glitch-free)
 
 ### [DEMO 51](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/50...51) signal authToken + toObservable()
 
@@ -279,7 +279,7 @@ import { toObservable, toSignal } from "@angular/core/rxjs-interop";
 
 PRO:
 
-1. Mi piace **computed** + richiamo `()` su template!
+1. Mi piace **computed** + richiamo `()` su template, senza problemi richiamare fn multipo/trick `ng-container *ngIf as`!
 2. In prima battuta potrebbe venire comodo per avere nuovo modo di evitare _subscription |async_ usando `toSignal(obs$)` che gestisce in **automatico unsubscribe**
 3. Forse essendo una "primitiva reactivity" avremo i maggiori vantaggi nelle integrazioni di nuove lib per **statemanagemnt** -> ritorno `Signal` al posto di Obs$ vedi [ngRxSignalStore](https://github.com/dmorosinotto/NG16-signal-store-playground)
 
@@ -289,7 +289,7 @@ PRO:
 
 CONTRO: ### [DEMO 54](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/53...54) exp dynamic effect
 
-1. **NON** è ancora chiarissimo come usarli / **anti-pattern** (vedi gestione async / effect con writeSignal)
+1. **NON** è ancora chiarissimo come usarli / **anti-pattern** (vedi gestione async / effect con allowSignalWrites)
 2. I grossi vantaggi (CD granulare) arriveranno in **FUTURO** con `Signal component` NG 17-18+
 3. Richiede una **riscrittura** manuale +/- pesante del codice che attualmente è organizzato in base agli Observable RxJS...
 
@@ -330,7 +330,7 @@ MIGRAZIONE @syntax: `ng generate @angular/core:control-flow`
 
 ### [DEMO 62](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/61...62) uso di @for con **track** obbligatorio
 
-### [DEMO 63](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/62...63) uso di @defer per rendere lazy parte del template con vari trigger!
+### [DEMO 63](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/62...63) uso di @defer per rendere lazy parte del template con vari [trigger](https://netbasal.com/a-comprehensive-guide-to-angulars-defer-block-468c74048df4)
 
 --
 
@@ -344,9 +344,9 @@ Esplicitare signal deps + untracked per evitare auto-track di parti non volute [
 
 ### [DEMO 65](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/64...65) uso di `input()`, `input.required()` e `output()`
 
-### [DEMO 66](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/60...61) uso di `input {trasfrom}` + router `withComponentInputBinding`
+### [DEMO 66](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/65...66) uso di `input {trasfrom}` + router `withComponentInputBinding`
 
-### [DEMO 67](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/60...61) uso di `model()` + two-way binding e form
+### [DEMO 67](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/66...67) uso di `model()` + two-way binding e form
 
 ---
 
