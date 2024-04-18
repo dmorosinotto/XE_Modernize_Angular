@@ -314,11 +314,11 @@ Comunque sono sicuramente da tenere d'occhio in questi 1-2anni per capirli bene 
 -   Provare effect che richiama Promise per dettare ritorno dati[] con `allowSignalWrites`
 -   Provare observable (custom interval con log unsubscribe) -> mostrare toSignal (auto unsubscribe)
 -   Mostrare toObservable -> anche qui auto unsubscribe alla fine con DestroyRef
--   Nuove API:
-    -   input, input.required, model, output, + query: view/contentChild/Children
+-   Nuove [SignalIO API V17.1-2](https://www.angularaddicts.com/p/master-angular-17-1-and-17-2):
+    -   input, input.required, [model](https://netbasal.com/angulars-model-function-explored-a-comprehensive-overview-4481d023c822), [output](https://netbasal.com/angulars-output-symphony-introducing-the-output-function-5015b1a657e6), + query: [view/contentChild/Children](https://netbasal.com/querying-made-easy-exploring-angulars-query-signals-ca850b5db892)
 -   Utilizzo librerie:
-    -   ngxtension -> computed$ , connect, …
-    -   signalStore + immer
+    -   [ngxtension](https://ngxtension.netlify.app/utilities/signals/computed-from/) -> **computedFrom** [articolo](https://eneajahollari.medium.com/a-sweet-spot-between-signals-and-observables-a3c9620768f1) idea by Enea&Chau, [**connect**](https://ngxtension.netlify.app/utilities/signals/connect/) [video](https://youtu.be/ol671CJnNjY?si=1Tt0u56lYfLLfSgF) uso by Joshua, …
+    -   [**signalStore**](https://www.angulararchitects.io/en/blog/the-new-ngrx-signal-store-for-angular-2-1-flavors/) spiegato da Mafred + approccio [**class** by Marko](https://x.com/markostdev/status/1727471903462363167?s=61) + [ngx-immer](https://github.com/timdeschryver/ngrx-immer) per facilitare scrittura codice "mutable"
 
 --
 
@@ -460,8 +460,6 @@ SU `angular.json`
 ### NG V17+ NEWLINKS
 
 -   Articolo Ninja release [RECAP NG17.0](https://blog.ninja-squad.com/2023/11/09/what-is-new-angular-17.0/)
--   [Slides ALEX](https://docs.google.com/presentation/d/1oc5dO40VANfkmYMFtyz6rstrJdHqV6nOwJluMjIcCkQ/edit?pli=1#slide=id.g1e556043fbc_0_0) Reactivity Rev2 ngVienna 01-12-2023 da SignalComponent -> SignalIO + zoneless
--   Intervista a Minko su [NOVITA ANGULAR V18+](https://youtu.be/2M17gRQbgfI?si=nJ3RzfWS5-CoF1dP)
 -   V17+ Bellisimo [ARTICOLO COMPLETO](https://mrrobot.dev/blog/angular-control-flow-deferred-loading) su **@-syntax**
 -   Guida completa a [**@defer** + condizioni vari `trigger`](https://netbasal.com/a-comprehensive-guide-to-angulars-defer-block-468c74048df4)
 -   Blog ufficiale Angular V17+ [Control flow @-syntax](https://blog.angular.io/meet-angulars-new-control-flow-a02c6eee7843)
@@ -484,7 +482,7 @@ SU `angular.json`
 -   Slides Debora Kurata [Intro uso Signal](https://bit.ly/ngconf2023)
 -   Video Debora Kurata su perché [Immutability](https://youtu.be/DBZESPS-5mQ)
 -   **EUREKA** Bellissimo [Video Rainer](https://youtu.be/6W6gycuhiN0?si=cMa1f48KRZG1fyPU) Guida completa a Signal (utile per Corso XE)
--   **EUREKA** Bellisimo [Video Alex](https://youtu.be/_yMrnSa2cTI?si=fBRf1krsCRNQpsI6) su ngOnChange + input signal + deep signals
+-   **EUREKA** Bellisimo [Video Alex](https://youtu.be/_yMrnSa2cTI?si=fBRf1krsCRNQpsI6) su ngOnChange + input signal + deep signals + [Slides ALEX](https://docs.google.com/presentation/d/1oc5dO40VANfkmYMFtyz6rstrJdHqV6nOwJluMjIcCkQ/edit?pli=1#slide=id.g1e556043fbc_0_0) Reactivity Rev2 ngVienna 01-12-2023 da SignalComponent -> SignalIO + zoneless
 -   Bell’ articolo di OZ su [**BestPractices Signal**](https://medium.com/@eugeniyoz/angular-signals-best-practices-9ac837ab1cec) e come sfruttare/quando usare computed & effects
 -   Lungo articolo di OZ su **DEEP** [automatic dependency graph](https://medium.com/@eugeniyoz/angular-signals-reactive-context-and-dynamic-dependency-tracking-d2d6100568b0) Producer/Consumer e usare untracked sia in effect e computed x escludere rischi auto-track
 -   **DEEP** descrizione come funziona Signal [STABLE live/consumer/CD by Mathieu](https://riegler.fr/blog/2023-10-24-signals-subscriptions)
@@ -502,7 +500,10 @@ SU `angular.json`
     -   [Timing](https://medium.com/@eugeniyoz/angular-signals-timing-a875659c5a1a) dei Signal
 -   Riassunto Michael su **Signals/Zoneless** link [discussioni su X con Alex](https://x.com/mikezks/status/1735206338324488247?s=61) + come [scatenare **CD**](https://x.com/mikezks/status/1735226934970192241?s=61
 -   [**DEEP CD**](https://medium.com/angularwave/local-change-detection-and-angular-signals-in-templates-in-details-948283adc36d) Signals by Vlad
+-   Intervista a Minko su [NOVITA ANGULAR V18+](https://youtu.be/2M17gRQbgfI?si=nJ3RzfWS5-CoF1dP)
 -   [Angular Zoneless](https://riegler.fr/blog/2024-01-11-zoneless-preview) in preview 17.1-rc0 articolo by Matthieu
+-   FUTURO é qui: **NG18 hybrid Zoneless CD** [articolo by Mathieu](https://riegler.fr/blog/2024-04-17-zoneless-with-zoneless-hybrid) + modifica Angular [PR](https://github.com/angular/angular/pull/55102) + snippet uso su X con [esempio uso](https://x.com/jean__meche/status/1780701185898655744?s=61)
+-   FUTURO altro bell’articolo Enea sempre su [NEW ERA Zoneless CD](https://justangular.com/blog/a-new-era-for-angular-zoneless-change-detection)
 
 #### STATEMANAGEMENT NGRX/SIGNAL
 
@@ -526,7 +527,7 @@ SU `angular.json`
 -   Bellssimo articolo Enea su [**computedFrom**](https://eneajahollari.medium.com/a-sweet-spot-between-signals-and-observables-a3c9620768f1) come combinare Obs$ + Signal -> combileLatest + catena pipe() -> toSignal
 -   Enea+Chau hanno fatto [LIB HELPER ngxtension](https://github.com/nartc/ngxtension-platform) come computedFrom e altro + Esempio uso su [Stackbliz](https://stackblitz.com/edit/stackblitz-starters-ecylu8?file=src%2Fmain.ts)
 -   [Tread](https://twitter.com/Enea_Jahollari/status/1692570021560459307?s=20) su twitter in cui discuto su miglioramenti del codice + [MIO Stackblitz](https://stackblitz.com/edit/stackblitz-starters-tq2wyo?file=src%2FcomputedFrom.ts,src%2Fmain.ts)
--   Figata **connect.with** per sincronizzare signal con Observable + funzione “reducer” per rielaborar signal valore prec+nuovo combinato con obs$ [Video Josh Moroy](https://youtu.be/ol671CJnNjY?si=1Tt0u56lYfLLfSgF)
+-   Figata **connect.with** per sincronizzare signal con Observable + funzione “reducer” per rielaborar signal valore prec+nuovo combinato con obs$ [Video Joshua Morony](https://youtu.be/ol671CJnNjY?si=1Tt0u56lYfLLfSgF)
 -   Interessante pattern [auto-signal](https://dev.to/mfp22/introducing-the-auto-signal-pattern-1a5h) per fare connect Obs$ -> Signal senza fare subito subscription, ma defer al 1’ utilizzo + gestisco share/unsub
 -   Bellisimo articolo su nuovo [nxRxMiniSignal](https://dev.to/this-is-angular/minirx-signal-store-for-angular-api-preview-4e16)
 -   Joshua Moroni [Form with Signals](https://youtu.be/cxoew5rmwFM?si=t8IzMOn1zaCP0PA1) + using [signalSlice](https://youtu.be/z7zK2u4vBrA?si=AopA3aZiAOX_Hdmw)
