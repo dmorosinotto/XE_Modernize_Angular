@@ -256,7 +256,7 @@ effect(() => {
 
 -   Praticamente è un **contenitore di valori**
 -   che espone un **getter** `()` che ritorna in modo efficace _"memoized"_ il valore corrente, ma internamente fa anche il tracciamento automatico di chi lo va ad utilizzare/leggere -> **computed/effect**
--   ha una serie di metodi per cambiare valore: `set/update` che scatenano **Notifiche** di cambiamento, e fanno partire _"auto-ricalcolo Lazy"_ dei **computed LIVE** ed **effect** (push/pull + glitch-free)
+-   ha una serie di metodi per cambiare valore: `set/update` che scatenano **Notifiche** di cambiamento, e fanno partire _"auto-ricalcolo Lazy"_ dei **computed LIVE** ed **effect** [eager dirty _push/pull_ lazy recalc + _glitch-free_](https://priyank-bhardwaj.medium.com/signals-what-new-does-it-bring-to-angular-9d16cc1fc568)
 
 ### [DEMO 51](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/50...51) signal authToken + toObservable()
 
@@ -268,69 +268,34 @@ effect(() => {
 import { toObservable, toSignal } from "@angular/core/rxjs-interop";
 ```
 
--   `toObservable(SIGNAL) -> OBS<T>` Internamente usa un **effect** per reagire ai valori letti dal SIGNAL e pubblicarli sullo stream in uscita --> NECESSITA di esser chiamato in un _InjectionContext_ o in alternativa passare option: `{injector}` per gestire il complete+destroy dell'effect quando termina il contesto
--   `toSignal(OBS) -> SIGNAL<T|undefined>` Internamente gestisce in **automatico unsubscribe** dell'Observable utilizzando DestroyRef (ricavato in automatico da _InjectionContext_ o dall'`{injector}` passato)! All'inizio emette undefined perchè Observable è _lazy_ ma signal è _syncrono_ , ammeno che non si passi option `{initialValue}`
+-   `toObservable(SIGNAL) -> OBS<T>` Internamente usa un **effect** per reagire ai valori letti dal SIGNAL e pubblicarli sullo stream in uscita --> NECESSITA di esser chiamato in un _InjectionContext_ o in alternativa passare option: `{injector}` da cui viene ricavato `DestroyRef` per fare pulizia quando il contesto termina ossia viene fatto il complete dello stream + destroy dell'effect!
+-   `toSignal(OBS) -> SIGNAL<T|undefined>` molto comodo perchè internamente gestisce in **automatico unsubscribe** dell'Observable utilizzando DestroyRef (ricavato in automatico da _InjectionContext_ o dall'`{injector}` passato)! Siccome Observable è _lazy_ ma signal è _syncrono_ (deve avere un valore) di default il signal parte con _undefined_ , ammenoche non si passi option `{initialValue}` oppure si garanteisce che Observable emetta subito un valore `{requireSync:true}`!
 
 ### [DEMO 52](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/51...52) toSignal() al posto di |async
 
---
-
-### Opinione un pò "contrastante":
-
-PRO:
-
-1. Mi piace **computed** + richiamo `()` su template, senza problemi richiamare fn multipo/trick `ng-container *ngIf as`!
-2. In prima battuta potrebbe venire comodo per avere nuovo modo di evitare _subscription |async_ usando `toSignal(obs$)` che gestisce in **automatico unsubscribe**
-3. Forse essendo una "primitiva reactivity" avremo i maggiori vantaggi nelle integrazioni di nuove lib per **statemanagemnt** -> ritorno `Signal` al posto di Obs$ vedi [ngRxSignalStore](https://github.com/dmorosinotto/NG16-signal-store-playground)
-
 ### [DEMO 53](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/52...53) exp dynamic computed
 
+### [DEMO 54](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/53...54) exp dynamic effect
+
 --
 
-CONTRO: ### [DEMO 54](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/53...54) exp dynamic effect
-
-1. **NON** è ancora chiarissimo come usarli / **anti-pattern** (vedi gestione async / effect con allowSignalWrites)
-2. I grossi vantaggi (CD granulare) arriveranno in **FUTURO** con `Signal component` NG 17-18+
-3. Richiede una **riscrittura** manuale +/- pesante del codice che attualmente è organizzato in base agli Observable RxJS...
+## Opinione un pò "contrastante": VEDI DOPO...
 
 Comunque sono sicuramente da tenere d'occhio in questi 1-2anni per capirli bene e prepararsi ad utilizzarli al meglio quando sarà completo il quadro!
 
---
-
-## TOFIX: TRACCIA SIGNAL
-
--   Spiegare il perché -> ottimizza ChangeDetection: [Video Mathieu a ngGraz](https://www.youtube.com/watch?v=Jf67ERGwFEM&t=1s) + Demo [LIVE CD](https://jeanmeche.github.io/angular-change-detection/) + zoneless / futuro SignalComponent [Slide Alex ngVienna](https://docs.google.com/presentation/d/1oc5dO40VANfkmYMFtyz6rstrJdHqV6nOwJluMjIcCkQ/edit?pli=1#slide=id.g1e556043fbc_0_0) + spiegazione come funziona [DEEP live/consumer](https://riegler.fr/blog/2023-10-24-signals-subscriptions)
--   Signal esempi sulle **basi** [signal, computed, effect](https://bit.ly/ngconf2023)
--   [BestPractice](https://medium.com/@eugeniyoz/angular-signals-best-practices-9ac837ab1cec) con effect parte iniziale dipendenze poi usa untracked
--   [Dimostrare](https://youtu.be/6W6gycuhiN0?si=cMa1f48KRZG1fyPU) concetti _"avanzati"_:
-    -   [Immutability](https://youtu.be/DBZESPS-5mQ) + Richiamo **equal** sia su signal.set/update e su computed
-    -   computed **cached** -> richiamo più volte su template senza prob (=auto distictUntilChange)
-    -   **glitch-free** (doppio set/update) -> richiama solo ultimo valore computed/effect
-        -   [Confronto](https://www.youtube.com/watch?v=iA6iyoantuo) con BehaviourSubject che soffre problema glitch (debounce + distinctUntilChanged)
-    -   use-case passaggio **injectorCtx / DestroyRef** + [gestione cleanUp](https://github.com/angular/angular/blob/17.3.4/packages/core/src/render3/reactivity/effect.ts#L255-L272)
-    -   Dimostrare immutability (equal) su [signal.update](https://github.com/angular/angular/blob/main/packages/core/primitives/signals/src/signal.ts#L68-L71)
-        -   VS immer [produce](https://immerjs.github.io/immer/#without-immer) per usare [codice mutabile](https://immerjs.github.io/immer/curried-produce)
-        -   VS provare [Trick Sanders](https://github.com/dmorosinotto/SandersTable_signalSample/blob/main/src/app/sample-data.service.ts#L51-L54) set([]) + set(mutato)
--   Provare effect che richiama Promise per dettare ritorno dati[] con `allowSignalWrites`
--   Provare observable (custom interval con log unsubscribe) -> mostrare toSignal (auto unsubscribe)
--   Mostrare toObservable -> anche qui auto unsubscribe alla fine con DestroyRef
--   Nuove [SignalIO API V17.1-2](https://www.angularaddicts.com/p/master-angular-17-1-and-17-2):
-    -   input, input.required, [model](https://netbasal.com/angulars-model-function-explored-a-comprehensive-overview-4481d023c822), [output](https://netbasal.com/angulars-output-symphony-introducing-the-output-function-5015b1a657e6), + query: [view/contentChild/Children](https://netbasal.com/querying-made-easy-exploring-angulars-query-signals-ca850b5db892)
--   Utilizzo librerie:
-    -   [ngxtension](https://ngxtension.netlify.app/utilities/signals/computed-from/) -> **computedFrom** [articolo](https://eneajahollari.medium.com/a-sweet-spot-between-signals-and-observables-a3c9620768f1) idea by Enea&Chau, [**connect**](https://ngxtension.netlify.app/utilities/signals/connect/) [video](https://youtu.be/ol671CJnNjY?si=1Tt0u56lYfLLfSgF) uso by Joshua, …
-    -   [**signalStore**](https://www.angulararchitects.io/en/blog/the-new-ngrx-signal-store-for-angular-2-1-flavors/) spiegato da Mafred + approccio [**class** by Marko](https://x.com/markostdev/status/1727471903462363167?s=61) + [ngx-immer](https://github.com/timdeschryver/ngrx-immer) per facilitare scrittura codice "mutable"
-
---
+---
 
 ## NOVITA NG16.X: nuova control-flow @syntax
 
 MIGRAZIONE @syntax: `ng generate @angular/core:control-flow`
 
+Qui trovate una [guida/confronto](https://mrrobot.dev/blog/angular-control-flow-deferred-loading) della sintassi vecchia \*ngIf/For/Switch -> nuova control-flow **@syntax** + nuovo uso del `@defer` block con vari [trigger](https://netbasal.com/a-comprehensive-guide-to-angulars-defer-block-468c74048df4)
+
 ### [DEMO 61](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/60...61) uso di @if e @else
 
 ### [DEMO 62](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/61...62) uso di @for con **track** obbligatorio
 
-### [DEMO 63](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/62...63) uso di @defer per rendere lazy parte del template con vari [trigger](https://netbasal.com/a-comprehensive-guide-to-angulars-defer-block-468c74048df4)
+### [DEMO 63](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/62...63) uso di @defer per rendere lazy parte del template
 
 --
 
@@ -352,7 +317,7 @@ Esplicitare signal deps + untracked per evitare auto-track di parti non volute [
 
 ### Extra: utilizzo _modern JS tools_
 
--   esbuild 🤯
+-   ESbuild 🤯
 -   Vite 💚 ⚡️
 -   abilitato da standalone + inject
 
@@ -366,7 +331,82 @@ SU `angular.json`
 +       "builder": "@angular-devkit/build-angular:application", //for SSR
 ```
 
-> Le "mie" nuove Best Practices: standalone + inject + helper fn + pnpm + vite + esbuild
+> Le "mie" nuove Best Practices: standalone + inject + helperFn + Signal (dove possibile) + pnpm + vite + ESbuild
+
+---
+
+### TODO: TRACCIA XE SIGNAL
+
+**TODO**: catturare gif/slide e seguire traccia dal video di [Rainer guida completa a Signal](https://www.youtube.com/watch?v=6W6gycuhiN0) ed eventualmente adattare esempi x dimostrare varie features nel progetto carrello NGver facendo [paginazione lista](https://youtu.be/V-D2sk_azcs?si=03lKUOkYGQfbvSdD&t=381) + qualche [slide su CD by Rainer](https://speakerdeck.com/rainerhahnekamp/towards-modern-change-detection?slide=70) e altre immagini su producer/comsumer eager dirty push/pull lazy eval posso prenderle da questo [video di Tomas Trajan](https://www.youtube.com/watch?v=sbIlz-yuxQI)
+
+![CD Default](videos/CD_Default.mov)
+![CD on Push](videos/CD_on_Push.mov)
+![CD with Signals](videos/CD_with_Signals.mov)
+![Local CD Signal](videos/CD_Local_Signal.mov)
+![CD Zoneless](videos/CD_Zoneless.mov)
+![Push-Pull + Live Reactive](videos/Push_Pull_LiveReactive.mov)
+
+--
+
+## ADVANCED: TRACCIA Rething App with SIGNAL
+
+Spiegare il **PERCHE' -> ottimizza ChangeDetection**:
+
+-   [Video Matthieu](https://www.youtube.com/watch?v=Jf67ERGwFEM&t=1s) a ngGraz
+-   Demo [LIVE CD](https://jeanmeche.github.io/angular-change-detection/)
+-   Zoneless / futuro SignalComponent [Slide PLAN v2 by Alex ngVienna](https://docs.google.com/presentation/d/1oc5dO40VANfkmYMFtyz6rstrJdHqV6nOwJluMjIcCkQ/edit?pli=1#slide=id.g262bbab3487_1_530)
+-   spiegazione come funziona [DEEP live/consumer by Matthieu](https://riegler.fr/blog/2023-10-24-signals-subscriptions)
+-   per i curiosi [DEEP Signal track CD by Vlad](https://medium.com/angularwave/local-change-detection-and-angular-signals-in-templates-in-details-948283adc36d)
+
+---
+
+-   Signal esempi sulle **BASI** signal, computed, effect [Slide Deborah Kurata](https://bit.ly/ngconf2023)
+
+-   [BestPractice by OZ](https://medium.com/@eugeniyoz/angular-signals-best-practices-9ac837ab1cec) con effect parte iniziale dipendenze poi usa untracked
+
+---
+
+[ALCUNE DEMO](src/app/signal) concetti _"avanzati"_:
+
+-   **ATTENZIONE** [Immutability](https://youtu.be/DBZESPS-5mQ) + altrimenti fallisce propagazione delle modifiche a Consumer (computed/effect) [Perchè usa equal](https://github.com/angular/angular/blob/main/packages/core/primitives/signals/src/signal.ts#L68-L71)
+    -   VS immer [produce](https://immerjs.github.io/immer/#without-immer) per usare [codice mutabile](https://immerjs.github.io/immer/curried-produce)
+    -   VS provare [Trick Sanders](https://github.com/dmorosinotto/SandersTable_signalSample/blob/main/src/app/sample-data.service.ts#L51-L54) set([]) + set(mutato) in sostituzione della `signal.mutate`(computed/effect) perchè sia su signal.set/update e su computed usa **equal**!
+-   computed **cached** -> richiamo più volte su template senza prob (=auto distictUntilChange)
+-   **glitch-free** (doppio set/update) -> richiama solo ultimo valore computed/effect
+    -   [Confronto con BehaviourSubject](https://www.youtube.com/watch?v=iA6iyoantuo) che soffre problema glitch (debounce + distinctUntilChanged)
+-   use-case passaggio **injectorCtx / DestroyRef** + [gestione cleanUp](https://github.com/angular/angular/blob/17.3.4/packages/core/src/render3/reactivity/effect.ts#L255-L272)
+-   Provare effect che richiama Promise per dettare ritorno dati[] con `allowSignalWrites`
+-   Mostrare toObservable -> anche qui **auto unsubscribe** alla fine con DestroyRef (provare con custoom Obs interval con log unsubscribe) -> mostrare toSignal (**auto unsubscribe**)
+
+---
+
+Articoli su nuove [SignalIO API V17.1-2](https://www.angularaddicts.com/p/master-angular-17-1-and-17-2):
+
+    -   input, input.required, [model](https://netbasal.com/angulars-model-function-explored-a-comprehensive-overview-4481d023c822), [output](https://netbasal.com/angulars-output-symphony-introducing-the-output-function-5015b1a657e6), + query: [view/contentChild/Children](https://netbasal.com/querying-made-easy-exploring-angulars-query-signals-ca850b5db892)
+
+---
+
+## Opinione un pò "contrastante":
+
+### PRO:
+
+1. Mi piace **computed** + richiamo `()` su template, che grazie al _"memoize"_ cache dell'utlimo valore calcolato, evita di dover rivalutare/richiamare fn computazione più volte anche se ripetuto nel template, senza bisogno di Pipe o trick `ng-container *ngIf as`!
+2. Molto comodo l'uso di `toSignal(obs$)` che gestisce in **automatico unsubscribe** che permette d avere il valore estratto dall'obs$ sempre disponibile anche lato codice senza riccorrere al _subscription |async_ sul template e senza rischiare memory-leak se ci si dimentica di gestire dappertutto il _takeUntilDestory()_
+3. Forse essendo una "primitiva reactivity" avremo i maggiori vantaggi nelle integrazioni di nuove lib per **statemanagemnt** -> ritorno `Signal` al posto di Obs$ vedi [ngRxSignalStore](https://github.com/dmorosinotto/NG16-signal-store-playground)
+
+--
+
+### CONTRO:
+
+1. La documentazione è **SCARNA**/_"banale"_ e soprattutto **NON E' CHIARA** su [come usarli](https://angular.dev/guide/signals#use-cases-for-effects) / **anti-pattern** (vedi update immutable / gestione async / effect con allowSignalWrites)
+2. I grossi vantaggi (CD granulare) arriveranno in **FUTURO** con `Signal component` NG 17-18+ ed eventuale _Zoneless_ [vedi come abilitare preview by Matthieu](https://riegler.fr/blog/2024-01-11-zoneless-preview)
+3. Richiede una **riscrittura** manuale +/- pesante del codice che attualmente è organizzato in base agli Observable RxJS [vedi suggerimenti MikeZ](https://x.com/mikezks/status/1735226934970192241?s=61) su possibili migrazioni su come scatenare CD...
+4. Necessità di rivolgersi a **Librerie esterne** per colmare il gap:
+    - Nonostante i `Signal` siano alla _base del reactivity system_ per fare [**StateManagement** riassunto](https://offering.solutions/blog/articles/2023/12/03/ngrx-signal-store-getting-started/) bisogna appoggiarsi a librerie esterne che [**prescrivono immutability**](https://ngrx.io/guide/signals/signal-state#updating-state) cone NGRX [`signalStore` by Rainer](https://www.youtube.com/watch?v=V-D2sk_azcs)/[`signalState` by Manfred](https://www.angulararchitects.io/en/blog/the-new-ngrx-signal-store-for-angular-2-1-flavors/) con approccio funzionale o [**class** by Marko](https://x.com/markostdev/status/1727471903462363167?s=61) + eventualmente [`immer`](https://github.com/timdeschryver/ngrx-immer) per facilitare scrittura codice "mutable" e poi convertirlo in "immutable" per signalStore
+    - Nonostante ci siano le _basi di interoperabilità con RxJS_ in alcuni casi è necessario usare altri **helpers ngxtensions** come [`derivedFrom`](https://ngxtension.netlify.app/utilities/signals/derived-from/) / [`connect.with`](https://youtu.be/ol671CJnNjY?si=1Tt0u56lYfLLfSgF) idea by [Enea & Chau](https://eneajahollari.medium.com/a-sweet-spot-between-signals-and-observables-a3c9620768f1)...
+5. **NON** è ancora chiaro come gestire le **FORM** sembra che l'approccio più semplice sia tornare alle TempalteForm con `[(ngModel)]` con una pletora di signal per singoli per ogni campo, ma bisogna costruirsi un po' di [helper formValueChange](https://youtu.be/ijp_qt3SYl4?si=m5GuatXvh-Vs-nht) per gestire flusso unidir + [computed `viewmodel`](https://youtu.be/ONOtrl6j6Qs?si=PDJPFyJGxWPtSrnQ) per gestire dipendenze tra campi, oppure ricorrere a tentativi/esperimenti "esterni" come [`SignalForm` by Tim](https://timdeschryver.dev/blog/bringing-the-power-of-signals-to-angular-forms-with-signal-forms) ispirate alle ReactiveForm con gestione custom della validazione/errorMsg e la gestione degli stati hide/disable...
+
+Comunque sono sicuramente da tenere d'occhio in questi 1-2anni per capirli bene e prepararsi ad utilizzarli al meglio quando sarà completo il quadro!
 
 ---
 
