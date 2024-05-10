@@ -231,60 +231,6 @@ La migrazione a NG16 porta alcune **novità utili**:
 
 --
 
-## SIGNAL - "The 🐘 in the room"
-
-> E' una nuova **PRIMITIVA REACTIVITY** -> con lo scopo di migliorare/rendere la `changeDetection` **puntuale**!
-
-```typescript
-const counter = signal(0); //infer WritableSignal<number>
-const isOdd = computed(() => !!(counter() % 2)); //infer Signal<boolean>
-
-counter.set(42); //RESETTA VALORE
-counter.update((c) => c + 1); //AGGIORNA VALORE
-
-effect(() => {
-    //VIENE RICALCOLATO AUTOMATICAMENTE + NOTATE () PER LEGGERE VALORE
-    console.log(`Adesso ${counter()} è ${isOdd() ? "dis" : ""}pari`);
-});
-```
-
-### [DEMO 50](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/49...50) Signal base
-
---
-
-#### Producer/Consumer + track deps & Notify
-
--   Praticamente è un **contenitore di valori**
--   che espone un **getter** `()` che ritorna in modo efficace _"memoized"_ il valore corrente, ma internamente fa anche il tracciamento automatico di chi lo va ad utilizzare/leggere -> **computed/effect**
--   ha una serie di metodi per cambiare valore: `set/update` che scatenano **Notifiche** di cambiamento, e fanno partire _"auto-ricalcolo Lazy"_ dei **computed LIVE** ed **effect** [eager dirty _push/pull_ lazy recalc + _glitch-free_](https://priyank-bhardwaj.medium.com/signals-what-new-does-it-bring-to-angular-9d16cc1fc568)
-
-### [DEMO 51](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/50...51) signal authToken + toObservable()
-
---
-
-### INTEROP con OBS$ [DEMO 52](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/51...52)
-
-```typescript
-import { toObservable, toSignal } from "@angular/core/rxjs-interop";
-```
-
--   `toObservable(SIGNAL) -> OBS<T>` Internamente usa un **effect** per reagire ai valori letti dal SIGNAL e pubblicarli sullo stream in uscita --> NECESSITA di esser chiamato in un _InjectionContext_ o in alternativa passare option: `{injector}` da cui viene ricavato `DestroyRef` per fare pulizia quando il contesto termina ossia viene fatto il complete dello stream + destroy dell'effect!
--   `toSignal(OBS) -> SIGNAL<T|undefined>` molto comodo perchè internamente gestisce in **automatico unsubscribe** dell'Observable utilizzando DestroyRef (ricavato in automatico da _InjectionContext_ o dall'`{injector}` passato)! Siccome Observable è _lazy_ ma signal è _syncrono_ (deve avere un valore) di default il signal parte con _undefined_ , ammenoche non si passi option `{initialValue}` oppure si garanteisce che Observable emetta subito un valore `{requireSync:true}`!
-
-### [DEMO 52](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/51...52) toSignal() al posto di |async
-
-### [DEMO 53](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/52...53) exp dynamic computed
-
-### [DEMO 54](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/53...54) exp dynamic effect
-
---
-
-## Opinione un pò "contrastante": VEDI DOPO...
-
-Comunque sono sicuramente da tenere d'occhio in questi 1-2anni per capirli bene e prepararsi ad utilizzarli al meglio quando sarà completo il quadro!
-
----
-
 ## NOVITA NG16.X: nuova control-flow @syntax
 
 MIGRAZIONE @syntax: `ng generate @angular/core:control-flow`
@@ -313,6 +259,12 @@ Esplicitare signal deps + untracked per evitare auto-track di parti non volute [
 
 ### [DEMO 67](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/66...67) uso di `model()` + two-way binding e form
 
+#### REF. Articoli su nuove [SignalIO API V17.1-2](https://www.angularaddicts.com/p/master-angular-17-1-and-17-2):
+
+    -   input, input.required, [model](https://netbasal.com/angulars-model-function-explored-a-comprehensive-overview-4481d023c822),
+    - [output](https://netbasal.com/angulars-output-symphony-introducing-the-output-function-5015b1a657e6),
+    - + query: [view/contentChild/Children](https://netbasal.com/querying-made-easy-exploring-angulars-query-signals-ca850b5db892)
+
 ---
 
 ### Extra: utilizzo _modern JS tools_
@@ -335,22 +287,85 @@ SU `angular.json`
 
 ---
 
-### TODO: TRACCIA XE SIGNAL
+## SIGNAL - "The 🐘 in the room"
 
-**TODO**: catturare gif/slide e seguire traccia dal video di [Rainer guida completa a Signal](https://www.youtube.com/watch?v=6W6gycuhiN0) ed eventualmente adattare esempi x dimostrare varie features nel progetto carrello NGver facendo [paginazione lista](https://youtu.be/V-D2sk_azcs?si=03lKUOkYGQfbvSdD&t=381) + qualche [slide su CD by Rainer](https://speakerdeck.com/rainerhahnekamp/towards-modern-change-detection?slide=70) e altre immagini su producer/comsumer eager dirty push/pull lazy eval posso prenderle da questo [video di Tomas Trajan](https://www.youtube.com/watch?v=sbIlz-yuxQI)
+> E' una nuova **PRIMITIVA REACTIVITY** -> con lo scopo di migliorare/rendere la `changeDetection` **puntuale**!
 
-![CD Default](videos/CD_Default.mov)
-![CD on Push](videos/CD_on_Push.mov)
-![CD with Signals](videos/CD_with_Signals.mov)
-![Local CD Signal](videos/CD_Local_Signal.mov)
-![CD Zoneless](videos/CD_Zoneless.mov)
-![Push-Pull + Live Reactive](videos/Push_Pull_LiveReactive.mov)
+```typescript
+const counter = signal(0); //infer WritableSignal<number>
+const isOdd = computed(() => !!(counter() % 2)); //infer Signal<boolean>
+
+counter.set(42); //RESETTA VALORE
+counter.update((c) => c + 1); //AGGIORNA VALORE
+
+effect(() => {
+    //VIENE RICALCOLATO AUTOMATICAMENTE + NOTATE () PER LEGGERE VALORE
+    console.log(`Adesso ${counter()} è ${isOdd() ? "dis" : ""}pari`);
+});
+```
+
+### [DEMO 50](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/49...50) Signal base
+
+[REF. Slide Deborah Kurata](https://bit.ly/ngconf2023) esempi sulle **BASI** signal, computed, effect
 
 --
 
-## ADVANCED: TRACCIA Rething App with SIGNAL
+#### Producer/Consumer + track deps & Notify
 
-Spiegare il **PERCHE' -> ottimizza ChangeDetection**:
+-   Praticamente è un **contenitore di valori**
+-   che espone un **getter** `()` che ritorna in modo efficace _"memoized"_ il valore corrente, ma internamente fa anche il tracciamento automatico di chi lo va ad utilizzare/leggere -> **computed/effect**
+-   ha una serie di metodi per cambiare valore: `set/update` che scatenano **Notifiche** di cambiamento, e fanno partire _"auto-ricalcolo Lazy"_ dei **computed LIVE** ed **effect** [eager dirty _push/pull_ lazy recalc + _glitch-free_](https://priyank-bhardwaj.medium.com/signals-what-new-does-it-bring-to-angular-9d16cc1fc568)
+
+### [DEMO 51](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/50...51) signal authToken + toObservable()
+
+--
+
+### INTEROP con OBS$ [DEMO 52](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/51...52)
+
+```typescript
+import { toObservable, toSignal } from "@angular/core/rxjs-interop";
+```
+
+-   `toObservable(SIGNAL) -> OBS<T>` Internamente usa un **effect** per reagire ai valori letti dal SIGNAL e pubblicarli sullo stream in uscita --> NECESSITA di esser chiamato in un _InjectionContext_ o in alternativa passare option: `{injector}` da cui viene ricavato `DestroyRef` per fare pulizia quando il contesto termina ossia viene fatto il complete dello stream + destroy dell'effect!
+-   `toSignal(OBS) -> SIGNAL<T|undefined>` molto comodo perchè internamente gestisce in **automatico unsubscribe** dell'Observable utilizzando DestroyRef (ricavato in automatico da _InjectionContext_ o dall'`{injector}` passato)! Siccome Observable è _lazy_ ma signal è _syncrono_ (deve avere un valore) di default il signal parte con _undefined_ , ammenoche non si passi option `{initialValue}` oppure si garanteisce che Observable emetta subito un valore `{requireSync:true}`!
+
+### [DEMO 52](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/51...52) toSignal() al posto di |async
+
+### [DEMO 53](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/52...53) exp dynamic computed
+
+### [DEMO 54](https://github.com/dmorosinotto/XE_Modernize_Angular/compare/53...54) exp dynamic effect
+
+---
+
+## ADVANCED: Spiegare il **PERCHE' -> ottimizza ChangeDetection**:
+
+Cos'è Change Detection?
+![CD Definizione](images/CD_definizione.png)
+
+Chi Schedula CD?
+![ZoneJS Schedula CD](images/ZoneJS_schedula.png)
+
+Cosa fa CD = Responsabilità?
+![CD Responsability](images/CD_responsability.png)
+
+CD Default -> scorre tutto l'albero
+![CD Default](videos/CD_Default.mov)
+
+Nostra responsabilità? ->
+![Unidrectional DataFlow](images/Unidirectional_dataflow.png)
+![Ossia](images/Unidirectional_meaning.png) un componente figlio non deve modificare dati padre,
+Altrimenti Errore -> [ExpressionChangedAfterViewRender](images/ExpressionChanged_NG0100.png)
+
+CD OnPush -> **ottimizzo** OPT-OUT da CD
+![CD controlla comp OnPush solo se](images/CD_OnPush_solose.png)
+![CD on Push](videos/CD_OnPush.mov)
+
+POssiamo risolvere entrambi i problemi con SIGNAL:
+Grazie all'Albero _DependencyGraph_ dei Signal! [CD with Signals](videos/CD_with_Signals.mov)
+E MarkForTraversla -> ![Local CD Signal](videos/CD_Local_Signal.mov)
+In futuro avremo ![CD Zoneless](videos/CD_Zoneless.mov)
+
+#### REF. CD:
 
 -   [Video Matthieu](https://www.youtube.com/watch?v=Jf67ERGwFEM&t=1s) a ngGraz
 -   Demo [LIVE CD](https://jeanmeche.github.io/angular-change-detection/)
@@ -360,13 +375,9 @@ Spiegare il **PERCHE' -> ottimizza ChangeDetection**:
 
 ---
 
--   Signal esempi sulle **BASI** signal, computed, effect [Slide Deborah Kurata](https://bit.ly/ngconf2023)
+### [ALCUNE DEMO](src/app/signal) concetti _"avanzati"_:
 
--   [BestPractice by OZ](https://medium.com/@eugeniyoz/angular-signals-best-practices-9ac837ab1cec) con effect parte iniziale dipendenze poi usa untracked
-
----
-
-[ALCUNE DEMO](src/app/signal) concetti _"avanzati"_:
+![Push-Pull + Live Reactive](videos/Push_Pull_LiveReactive.mov)
 
 -   **ATTENZIONE** [Immutability](https://youtu.be/DBZESPS-5mQ) + altrimenti fallisce propagazione delle modifiche a Consumer (computed/effect) [Perchè usa equal](https://github.com/angular/angular/blob/main/packages/core/primitives/signals/src/signal.ts#L68-L71)
     -   VS immer [produce](https://immerjs.github.io/immer/#without-immer) per usare [codice mutabile](https://immerjs.github.io/immer/curried-produce)
@@ -378,11 +389,11 @@ Spiegare il **PERCHE' -> ottimizza ChangeDetection**:
 -   Provare effect che richiama Promise per dettare ritorno dati[] con `allowSignalWrites`
 -   Mostrare toObservable -> anche qui **auto unsubscribe** alla fine con DestroyRef (provare con custoom Obs interval con log unsubscribe) -> mostrare toSignal (**auto unsubscribe**)
 
----
+#### REF. ADVANCED:
 
-Articoli su nuove [SignalIO API V17.1-2](https://www.angularaddicts.com/p/master-angular-17-1-and-17-2):
-
-    -   input, input.required, [model](https://netbasal.com/angulars-model-function-explored-a-comprehensive-overview-4481d023c822), [output](https://netbasal.com/angulars-output-symphony-introducing-the-output-function-5015b1a657e6), + query: [view/contentChild/Children](https://netbasal.com/querying-made-easy-exploring-angulars-query-signals-ca850b5db892)
+-   [Video Guida Rainer](https://www.youtube.com/watch?v=6W6gycuhiN0)
+-   [Video Push/Poll by Tomas](https://www.youtube.com/watch?v=sbIlz-yuxQI)
+-   [**BESTPRACTICES** by OZ](https://medium.com/@eugeniyoz/angular-signals-best-practices-9ac837ab1cec) ok utilizzo signal su template & computed + Attenzione: a catturare ReactiveContext con effect parte iniziale dipendenze poi usa `untracked`!
 
 ---
 
