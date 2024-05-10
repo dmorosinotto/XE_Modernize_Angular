@@ -1,4 +1,4 @@
-import { Component, computed, inject, model } from "@angular/core";
+import { Component, Injector, computed, inject, model } from "@angular/core";
 import { NgClass, NgFor, AsyncPipe, CurrencyPipe } from "@angular/common";
 import { FormControl } from "@angular/forms";
 
@@ -11,12 +11,13 @@ import { toSignal } from "@angular/core/rxjs-interop";
     styles: [".error { color: red }"],
     providers: [ShippingService],
     standalone: true,
-    imports: [NgClass, NgFor, AsyncPipe, CurrencyPipe]
+    imports: [NgClass, NgFor, AsyncPipe, CurrencyPipe],
 })
 export class ShippingComponent {
+    #injector = inject(Injector);
     shippingCosts = toSignal(
         inject(ShippingService).getShippingPrices(), //unsubcribe AUTOMATICO GARANTITO toSignal
-        { initialValue: [] as IShipping[] } //DEFINISCE 1° VALORE EMESSO - ALTRIMENTI undefined
+        { initialValue: [] as IShipping[], injector: this.#injector } //DEFINISCE 1° VALORE EMESSO - ALTRIMENTI undefined
     ); //infer Singal<IShipping[]>
 
     shipCost = model<number>(0, { alias: "cost" }); //infer Signal<number>

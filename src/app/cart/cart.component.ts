@@ -30,9 +30,12 @@ export class CartComponent {
         //     this.shipCtrl.setValue(this.$shipCost());
         // });
         // this.shipCtrl.valueChanges.subscribe((value) => this.$shipCost.set(value));
+        // this.cartSrv = inject(CartService);
     }
 
+    // cartSrv: CartService;
     cartSrv = inject(CartService);
+
     items = this.cartSrv.getItems();
 
     onSubmit(): void {

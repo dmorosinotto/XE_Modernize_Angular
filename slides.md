@@ -349,7 +349,7 @@ Cosa fa CD = Responsabilità?
 ![CD Responsability](images/CD_responsability.png)
 
 CD Default -> scorre tutto l'albero
-![CD Default](videos/CD_Default.mov)
+![CD Default](https://github.com/dmorosinotto/XE_Modernize_Angular/blob/signals/videos/CD_Default.mov)
 
 Nostra responsabilità? ->
 ![Unidrectional DataFlow](images/Unidirectional_dataflow.png)
